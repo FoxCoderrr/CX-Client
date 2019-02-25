@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>股票交易</title>
+		<!-- 公共样式 -->
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="iconfont/iconfont.css" />
+		<!-- 页面样式 -->
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+	</head>
+
+	<body class="right_body">
+		<div class="wrap_box">
+			<div class="main index2_main clearfix">
+				<ul id="myTab" class="nav nav-tabs">
+					<li class="active">
+						<a href="#transfer" data-toggle="tab">资金转出</a>
+					</li>
+					<li>
+						<a href="#withdraw" data-toggle="tab">提取盈利</a>
+					</li>
+					<!--<li>
+						<a href="#add" data-toggle="tab">追加保证金</a>
+					</li>-->
+				</ul>
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane fade in active" id="transfer">
+						<div class="form">
+							<div class="form-group form-inline g">
+								<label for="">可用保证金：</label>
+								<input type="text" class="form-control can_deposit" value="0.00(￥)" readonly style="border-color: #333;">
+							</div>
+							<div class="form-group form-inline g">
+								<label for="">冻结保证金：</label>
+								<input type="text" class="form-control freeze_deposit" value="0.00(￥)" readonly style="border-color: #333;">
+							</div>
+							<div class="form-group form-inline g">
+								<label for="">可用资金：</label>
+								<input type="text" class="form-control can_use" value="0.00(￥)" readonly style="border-color: #333;">
+							</div>
+							<div class="form-group form-inline g">
+								<label for="">冻结资金：</label>
+								<input type="text" class="form-control freeze_use" value="0.00(￥)" readonly style="border-color: #333;">
+							</div>
+							<!--<div class="form-group form-inline">
+								<label for="ttype">转账方式：</label>
+								<select class="form-control t_type" id="ttype">
+									<option value="1">资金转出</option>
+									<option value="2">资金转出</option>
+								</select>
+							</div>-->
+							
+							<div class="form-group form-inline">
+								<label for="number">转账金额：</label>
+								<input type="text" class="form-control limit_coin number" id="number" placeholder="请输入转账金额">
+							</div>
+							<div class="form-group form-inline">
+								<label for="pwd1">交易密码：</label>
+								<input type="password" class="form-control pwd1" id="pwd1" placeholder="请输入交易密码">
+							</div>
+							<button class="btn tsr_btn" onclick="transfer()">转账</button>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="withdraw">
+						<div class="form">
+							<div class="form-group form-inline">
+								<label for="">可提盈利：</label>
+								<input type="text" class="form-control can_profit" value="0.00(￥)" readonly style="border-color: #333;">
+							</div>
+							<div class="form-group form-inline">
+								<label for="wprofit">提取盈利：</label>
+								<input type="text" class="form-control limit_coin wprofit" id="wprofit" placeholder="请输入提取金额">
+							</div>
+							<div class="form-group form-inline">
+								<label for="pwd">交易密码：</label>
+								<input type="password" class="form-control pwd" id="pwd" placeholder="请输入交易密码">
+							</div>
+							<button class="btn btn1" onclick="withdraw()">提取</button>
+						</div>
+					</div>
+					<!--<div class="tab-pane fade" id="add">
+						<div class="form">
+							<div class="form-group form-inline g">
+								<label for="">可用保证金：</label>
+								<input type="text" class="form-control can_deposit" value="0.00(￥)" readonly style="border-color: #333;">
+							</div>
+							<div class="form-group form-inline">
+								<label for="">冻结保证金：</label>
+								<input type="text" class="form-control freeze_deposit" value="0.00(￥)" readonly style="border-color: #333;">
+							</div>
+							<div class="form-group form-inline">
+								<label for="add_deposit">追加保证金：</label>
+								<input type="text" class="form-control limit_coin add_deposit" id="add_deposit" placeholder="请输入追加金额">
+								<p>
+									<span class="iconfont icon-unie633"></span>追加金额最少<span class="min">100</span>元起
+								</p>
+							</div>
+							<button class="btn btn1" onclick="add()">追加</button>
+						</div>
+					</div>-->
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//转账
+		function transfer(){
+			var ttype = $("#ttype").val();
+			var number = $("#number").val();
+			var pwd = $("#pwd1").val();
+			if(!number){
+				_msg("请输入转账金额");
+				return false;
+			}
+			if(!pwd){
+				_msg("请输入交易密码");
+				return false;
+			}
+			_loading1();
+			$.ajax({
+				type: "post",
+				dataType: "json",
+				url: `${nozUrl}Api/deal/transfer_handel`,
+				data: {
+					userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+					money:number,
+					tradePassword:pwd
+				},
+				success: function(res) {
+					_closeLoading();
+					_msg(res.msg);
+
+				}
+			})
+//			var str="";
+//				str=`<ul class="dia_ul">
+//						<li>
+//							<span>转账方式：</span>
+//							<span>${ttype}</span>
+//						</li>
+//						<li>
+//							<span>转账金额：</span>
+//							<span>${number}</span>
+//						</li>
+//					</ul>`
+//				layer.confirm(str, {
+//					title: "转账",
+//					btn: ['确定', '取消'],
+//					closeBtn:0,
+//					offset:"t",
+//				}, function(index, layero) {
+//					// 确定
+//					_loading1();
+//					$.ajax({
+//						type: "post",
+//						dataType: "json",
+//						url: `${nozUrl}Api/users/transfer_handel`,
+//						data: {
+//							userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+//							money:number
+//						},
+//						success: function(res) {
+//							_closeLoading();
+//							_msg(res.msg);
+//							layer.close(index);
+//						}
+//					})
+//					layer.close(index);
+//				}, function(index) {
+//					// 取消
+//				});
+		}
+		//提取盈利
+		function withdraw(){
+			var wprofit = $(".wprofit").val();
+			var pwd = $("#pwd").val();
+			if(wprofit&&pwd){
+				if(parseFloat(wprofit)>parseFloat($(".can_profit").val().split("(")[0])){
+					_msg("余额不足");return false;
+				}
+				var str="";
+				str=`<ul class="dia_ul">
+						<li>
+							<span>提取盈利：</span>
+							<span>${wprofit}</span>
+						</li>
+					</ul>`
+				layer.confirm(str, {
+					title: "提取",
+					btn: ['确定', '取消'],
+					closeBtn:0,
+					offset:"t",
+				}, function(index, layero) {
+					// 确定
+					_loading1();
+					$.ajax({
+						type: "post",
+						dataType: "json",
+						url: `${nozUrl}Api/deal/extractMoney`,
+						data: {
+							userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+							money:wprofit,
+							tradePassword:pwd,
+						},
+						success: function(res) {
+							_closeLoading();
+							_msg(res.msg);
+							layer.close(index);
+						}
+					})
+				}, function(index) {
+					// 取消
+				});
+				
+			}else{
+				_msg("请输入完整信息");
+			}
+		}
+		//追加
+		function add(){
+			var add_deposit = $("#add_deposit").val();
+			var min = $(".min").html();
+			if(Number(add_deposit)<Number(min)||!add_deposit){
+				_msg("请输入合理数值");
+				return false;
+			}
+			var str="";
+				str=`<ul class="dia_ul">
+						<li>
+							<span>追加金额：</span>
+							<span>${add_deposit}</span>
+						</li>
+					</ul>`
+				layer.confirm(str, {
+					title: "追加保证金",
+					btn: ['确定', '取消'],
+					closeBtn:0,
+					offset:"t",
+				}, function(index, layero) {
+					// 确定
+	
+					layer.close(index);
+				}, function(index) {
+					// 取消
+				});
+		}
+		$(function() {
+
+			//盈利
+			$.ajax({
+				type: "post",
+				dataType: "json",
+				url: `${nozUrl}Api/users/profit`,
+				data: {
+					userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+				},
+				success: function(res) {
+
+					$(".can_profit").val(parseFloat(res.data.extractMoney).toFixed(2)+"(￥)");
+				}
+			})
+			
+			var as = getAssets();
+
+			$(".can_deposit").val(as.bond+"(￥)");
+			$(".freeze_deposit").val(as.frozen_bond+"(￥)");
+			$(".can_use").val(as.valid_amount+"(￥)");
+			$(".freeze_use").val(as.frozen_amount+"(￥)")
+		})
+	</script>
+
+</html>

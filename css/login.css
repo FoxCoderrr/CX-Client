@@ -1,0 +1,69 @@
+.wrap_box{
+	background: url(../img/bg.png);
+	background-size: 100% 100%;
+	height: 100%;
+}
+h3{
+	color: white;
+	padding: 45px 0 45px;
+}
+.form{
+	background: white;
+	width: 40%;
+	margin: 0 auto;
+	border-radius: 10px;
+	padding: 40px 50px 40px;
+	max-width: 600px;
+}
+.form label{
+	color: #101010;
+	font-weight: normal;
+	font-size: 16px;
+}
+.form .form-control{
+	height: 44px;
+}
+.form .btn{
+	display: block;
+	margin: 0 auto;
+	border: 1px solid #3F51B5;
+	width: 60%;
+	height: 44px;
+	background: white;
+	color: #3F51B5;
+}
+.form .login_btn{
+	background: #3F51B5;
+	color: white;
+	margin: 0 auto 0;
+}
+.form .remember{
+	margin: 26px 0 40px;
+}
+.form .remember>div{
+	display: inline-block;
+	margin-right: 20px;
+	vertical-align: bottom;
+}
+.form .remember>div .iconfont{
+	font-size: 16px;
+	margin-right: 6px;
+	display: inline-block;
+	vertical-align: bottom;
+}
+#v_container{
+	height: 44px;
+	float: right;
+}
+.code_group label{
+	display: block;
+}
+.code_group>input{
+	float: left;
+	width: calc(100% - 110px);
+}
+.img_code{
+	float: right;
+	width: 100px;
+	height: 44px;	
+}

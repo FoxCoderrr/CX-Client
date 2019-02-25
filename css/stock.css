@@ -1,0 +1,145 @@
+.main {
+	background: #000;
+	width: 100%;
+	height: 100%;
+}
+
+table tbody {
+	display: block;
+	height: calc(100% - 40px);
+	overflow-y: scroll;
+}
+table tbody::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #2b2b2b;
+  border: 1px solid #2b2b2b;
+}
+table tbody::-webkit-scrollbar-track {
+   -webkit-box-shadow: inset 0 0 6px #2b2b2b;
+  background-color: #2b2b2b;
+}
+table tbody::-webkit-scrollbar-thumb {
+   -webkit-box-shadow: inset 0 0 6px #2b2b2b;
+  background-color: #646464;
+  border-radius: 4px;
+}
+
+table thead,
+tbody tr {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+}
+
+table thead {
+	width: calc( 100% - 6px)
+}
+
+.table-responsive {
+	height: calc(100% - 26px);
+	overflow: hidden;
+}
+
+.table {
+	color: #c0c0c0;
+	margin-bottom: 0;
+	height: 100%;
+}
+
+.table tbody tr {
+	cursor: default;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+body .table tbody .active td {
+	background: #6d6d6d;
+}
+
+.table thead tr th,
+.table tbody tr td {
+	border: 0;
+	text-align: right;
+	vertical-align: middle;
+	white-space: nowrap;
+
+}
+
+.table thead tr th {
+	color: #c0c0c0;
+	font-weight: normal;
+}
+
+.table tbody tr td {
+	font-weight: 700;
+	padding: 4px 8px 4px;
+}
+
+.table thead tr th:nth-child(3),
+.table tbody tr td:nth-child(3) {
+	font-weight: normal;
+}
+
+.table thead tr th:nth-child(2),
+.table tbody tr td:nth-child(2) {
+	width: 60px;
+	padding: 4px 8px 4px 0;
+}
+
+.table thead tr th:first-child,
+.table tbody tr td:first-child {
+	width: 40px;
+}
+
+.table thead tr th:last-child,
+.table tbody tr td:last-child {
+	padding: 4px 24px 4px 8px;
+}
+
+.sort {
+	color: #333;
+	margin-top: 4px;
+	padding: 0 2px 0;
+}
+
+.sort>span {
+	float: left;
+	text-align: center;
+	padding: 0px 4px 0px;
+	background: #808080;
+	border-radius: 1px;
+	margin-right: 3px;
+}
+
+.sort>.active {
+	background: #800000;
+	color: #7fffff;
+}
+
+.mouse_div {
+	display: none;
+	left: 0;
+	top: 0;
+	position: fixed;
+	background: white;
+	font-size: 13px;
+	border: 1px solid #ccc;
+	width: 200px;
+	z-index: 9
+}
+
+.mouse_div ul {
+	padding: 4px 0 4px;
+}
+
+.mouse_div ul li {
+	cursor: default;
+	line-height: 26px;
+	padding-left: 30px;
+}
+
+.mouse_div ul .li:hover {
+	background: #ebebeb;
+}

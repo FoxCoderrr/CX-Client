@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>股票交易</title>
+		<!-- 公共样式 -->
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="iconfont/iconfont.css" />
+		<!-- 页面样式 -->
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+	</head>
+
+	<body class="w_body body app_body">
+		<div class="wrap_box">
+			<!--<iframe src="http://hq.ghzq.com.cn/" class="market" frameborder="0"></iframe>-->
+			<iframe src="stock.html" class="market" frameborder="0"></iframe>
+			<div class="three clearfix">
+				<div class="div c_p" onclick="threeFun(0)">
+					<span class="f_c_yellow">上证&nbsp;&nbsp;</span>
+					<span class="f_c_red">&nbsp;&nbsp;</span>
+					<span class="f_c_yellow">&nbsp;&nbsp;</span>
+				</div>
+				<div class="div c_p" onclick="threeFun(1)">
+					<span class="f_c_yellow">深证&nbsp;&nbsp;</span>
+					<span class="f_c_red">&nbsp;&nbsp;</span>
+					<span class="f_c_yellow">&nbsp;&nbsp;</span>
+				</div>
+				<div class="div c_p" onclick="threeFun(2)">
+					<span class="f_c_yellow">深沪&nbsp;&nbsp;</span>
+					<span class="f_c_red">&nbsp;&nbsp;</span>
+					<span class="f_c_yellow">&nbsp;&nbsp;</span>
+				</div>
+				<div class="info">
+					<span class="icon">
+						<span class="iconfont icon-zhuye1 c_p tip" onclick="toHome()"></span>
+					<span>主页</span>
+					</span>
+					<span class="icon">
+						<span onclick="prev()" class="iconfont icon-uparrow c_p tip"></span>
+					<span>上一页</span>
+					</span>
+					<span class="icon">
+						<span onclick="next()" class="iconfont icon-downarrow c_p tip"></span>
+					<span>下一页</span>
+					</span>
+					<span class="icon">
+						<span onclick="back()" class="iconfont icon-leftarrow c_p tip"></span>
+					<span>后退</span>
+					</span>
+					<span class="s_img">
+						<img class="c_p tip" src="img/6.png"/>
+						<span>已连接</span>
+					</span>
+					<span>国海证券</span>
+				</div>
+			</div>
+			<div class="main clearfix">
+				<div class="col_nav pull-left">
+					<ul class="main_nav">
+						<li class="active c_p">交易</li>
+						<li class="c_p">交易查询</li>
+						<li class="c_p">资金管理</li>
+						<li class="c_p">入金记录</li>
+						<li class="c_p">出金记录</li>
+						<li class="c_p">修改密码</li>
+						<li class="c_p">交易规则</li>
+					</ul>
+
+				</div>
+				<div class="col_con pull-right">
+					<iframe src="index0.html" class="main_right" frameborder="0"></iframe>
+				</div>
+
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var arr = ["sh000001", "sz399001", "sz399300"];
+		function back() {
+			if($(".market").attr("src")!="stock.html"){
+				$(".market").attr("src", "stock.html");
+			}
+		}
+		function toHome() {
+			sessionStorage.setItem("source",0);
+			$(".market").attr("src", "stock.html");
+		}
+		function threeFun(i){
+			sessionStorage.setItem("activeshort",arr[i]);
+			if($(".market").attr("src")=="tline.html"){
+				$(".market")[0].contentWindow.time_line(sessionStorage.getItem("activeshort"));
+				$(".market")[0].contentWindow.first();
+			}else if($(".market").attr("src")=="kline.html"){
+				$(".market")[0].contentWindow.setCurrent(1);
+				$(".market")[0].contentWindow.first();
+			}else{
+				$(".market").attr("src","tline.html");
+			}
+		}
+		function prev(){
+			if($(".market").attr("src")=="stock.html"){
+				$(".market")[0].contentWindow.prev();
+			}
+		}
+		function next(){
+			if($(".market").attr("src")=="stock.html"){
+				$(".market")[0].contentWindow.next();
+			}
+		}
+		$(function() {
+			//切换
+			$(".main_nav>li").on("click", function() {
+				var i = $(this).index();
+				$(this).addClass("active").siblings("li").removeClass("active");
+				$(".main_right").attr("src", "index" + i + ".html");
+			})
+			$(".tip").hover(function() {
+				$(this).siblings("span").show();
+			}, function() {
+				$(this).siblings("span").hide();
+			})
+			if(!sessionStorage.getItem("uinfo")) {
+				window.location.href = "login.html";
+			}
+
+			fun();
+			window.three = setInterval(fun, 3000);
+
+			function fun() {
+				$.ajax({
+					url: "http://qt.gtimg.cn/q=" + arr.toString(),
+					type: "GET",
+					dataType: "script",
+					cache: true,
+					success: function() {
+						var a,
+							list = [];
+						for(let i in arr) {
+							a = eval("v_" + arr[i]).split("~");
+							let obj = {};
+							obj.short = arr[i];
+							obj.updown_ = a[32] + "%";
+							obj.updown = a[31];
+							if(obj.updown > 0) {
+								obj.color = "f_c_red";
+							} else if(obj.updown < 0) {
+								obj.color = "f_c_green";
+							} else {
+								obj.color = "f_c_white";
+							}
+							if(a[37] > 10000) {
+								if(parseFloat(a[37] % 10000)) {
+									a[37] = parseFloat(a[37] / 10000).toFixed(1);
+								} else {
+									a[37] = parseFloat(a[37] / 10000);
+								}
+								a[37] = parseFloat(a[37]) + "亿";
+							} else {
+								a[37] = a[37] + "万";
+							}
+							obj.amount = a[37];
+							obj.code = a[2];
+							obj.name = a[1];
+							if(i == 0) {
+								obj.name1 = "上证";
+							} else if(i == 1) {
+								obj.name1 = "深证";
+							} else {
+								obj.name1 = "深沪";
+							}
+							list.push(obj);
+						}
+						for(let i in list){
+							$(".three>.div").eq(i).html(`<span class="f_c_yellow">${list[i].name1}&nbsp;&nbsp;</span>
+					<span class=${list[i].color}>${list[i].updown}&nbsp;&nbsp;${list[i].updown_}</span>
+					<span class="f_c_yellow">&nbsp;&nbsp;${list[i].amount}</span>`)
+						}
+						
+					}
+				});
+			}
+
+		})
+	</script>
+
+</html>

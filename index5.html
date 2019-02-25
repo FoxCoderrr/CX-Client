@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>股票交易</title>
+		<!-- 公共样式 -->
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="iconfont/iconfont.css" />
+		<!-- 页面样式 -->
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+	</head>
+
+	<body class="right_body">
+		<div class="wrap_box">
+			<div class="main index5_main clearfix">
+				<div class="form">
+					<p>您可以设置6-12位新密码，建议使用6位新密码，密码可包含字母、数字、下划线！</p>
+					<div class="form-group form-inline">
+						<label for="old_pwd">当前交易密码：</label>
+						<input type="password" class="form-control old_pwd" id="old_pwd" placeholder="请输入当前交易密码">
+					</div>
+					<div class="form-group form-inline">
+						<label for="new_pwd">新交易密码：</label>
+						<input type="password" class="form-control new_pwd" id="new_pwd" placeholder="请输入新交易密码">
+					</div>
+					<div class="form-group form-inline">
+						<label for="new_pwd1">确认新交易密码：</label>
+						<input type="password" class="form-control new_pwd1" id="new_pwd1" placeholder="请再次输入新交易密码">
+					</div>
+					<button class="btn btn1" onclick="update()">确认修改</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		function update() {
+			var oldpwd = $("#old_pwd").val();
+			var newpwd = $("#new_pwd").val();
+			var newpwd1 = $("#new_pwd1").val();
+			if(oldpwd && newpwd && newpwd1) {
+				if(newpwd != newpwd1) {
+					_msg("两次新密码输入不一致");
+					return false;
+				}
+				$.ajax({
+					type: "post",
+					dataType: "json",
+					url: `${nozUrl}Api/users/reviseTrans`,
+					data: {
+						userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+						oldPassword: oldpwd,
+						newPassword: newpwd
+					},
+					success: function(res) {
+						if(res.status == 200) {
+							$("input").val("");
+						}
+						_msg(res.msg);
+					}
+				})
+			} else {
+				_msg("请输入完整信息")
+			}
+		}
+		$(function() {
+
+		})
+	</script>
+
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>股票交易</title>
+		<!-- 公共样式 -->
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="iconfont/iconfont.css" />
+		<!-- 页面样式 -->
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+	</head>
+
+	<body class="right_body">
+		<div class="wrap_box">
+			<div class="main index1_main clearfix">
+				<div class="index1_top">
+					<span>保证金金额：<span class="deposit_a"></span>￥</span>
+					<span>冻结保证金 ：<span class="frozen_bond"></span>￥</span>
+					<span>可用余额 ：<span class="can_a"></span>￥</span>
+					<span>参考市值 ：<span class="position_a">0.00</span>￥</span>
+					<span>资产 ：<span class="total_a">0.00</span>￥</span>
+					<span>盈亏 ：<span class="float_v">0.00</span>￥</span>
+				</div>
+				<div class="index1_body">
+					<ul id="myTab" class="nav nav-tabs">
+						<li class="active">
+							<a href="#today_e" data-toggle="tab">今日委托</a>
+						</li>
+						<li>
+							<a href="#history_e" data-toggle="tab">历史委托</a>
+						</li>
+						<li>
+							<a href="#today_f" data-toggle="tab">今日成交</a>
+						</li>
+						<li>
+							<a href="#history_f" data-toggle="tab">历史成交</a>
+						</li>
+						<li>
+							<a href="#assets_b" data-toggle="tab">资金流水</a>
+						</li>
+						<li>
+							<a href="#assets_m" data-toggle="tab">我的资产</a>
+						</li>
+					</ul>
+					<div id="myTabContent" class="tab-content">
+						<div class="tab-pane fade in active" id="today_e">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>委托单号</th>
+										<th>委托时间</th>
+										<th>股票代码</th>
+										<th>股票名称</th>
+										<th>委托类型</th>
+										<th>委托价位</th>
+										<th>委托数量</th>
+										<th>委托状态</th>
+									</tr>
+								</thead>
+								<tbody class="t_body0">
+									
+								</tbody>
+							</table>
+						</div>
+						<div class="tab-pane" fade id="history_e">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>委托单号</th>
+										<th>委托时间</th>
+										<th>股票代码</th>
+										<th>股票名称</th>
+										<th>委托类型</th>
+										<th>委托价位</th>
+										<th>委托数量</th>
+										<th>委托状态</th>
+									</tr>
+								</thead>
+								<tbody class="t_body1">
+									
+								</tbody>
+							</table>
+						</div>
+						<div class="tab-pane" fade id="today_f">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>委托单号</th>
+										<!--<th>委托时间</th>-->
+										<th>股票代码名称</th>
+										<!--<th>委托价格</th>-->
+										<th>成交数量</th>
+										<th>成交时间</th>
+										<th>成交价格</th>
+										<th>成交总值</th>
+										<th>手续费</th>
+										<th>印花税</th>
+										<th>过户费</th>
+										<th>留仓费</th>
+									</tr>
+								</thead>
+								<tbody class="t_body2">
+									
+								</tbody>
+							</table>
+						</div>
+						<div class="tab-pane" fade id="history_f">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>委托单号</th>
+										<!--<th>委托时间</th>-->
+										<th>股票代码名称</th>
+										<!--<th>委托价格</th>-->
+										<th>成交数量</th>
+										<th>成交时间</th>
+										<th>成交价格</th>
+										<th>成交总值</th>
+										<th>手续费</th>
+										<th>印花税</th>
+										<th>过户费</th>
+										<th>留仓费</th>
+									</tr>
+								</thead>
+								<tbody class="t_body3">
+									
+								</tbody>
+							</table>
+						</div>
+						<div class="tab-pane" fade id="assets_b">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>时间</th>
+										<th>涉及金额（￥）</th>
+										<th>手续费（￥）</th>
+										<th>类型</th>
+									</tr>
+								</thead>
+								<tbody class="t_body4">
+									
+								</tbody>
+							</table>
+						</div>
+						<div class="tab-pane" fade id="assets_m">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>总资产（￥）</th>
+										<th>保证金额（￥）</th>
+										<th>可用资金（￥）</th>
+										<th>可取资金（￥）</th>
+										<th>冻结资金（￥）</th>
+										<th>持仓市值（￥）</th>
+										<th>浮动盈亏（￥）</th>
+										<th>配资比例</th>
+										<th>提现总额</th>
+										<th>充值总额</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="total_a"></td>
+										<td class="deposit_a"></td>
+										<td class="can_a"></td>
+										<td class="can1_a"></td>
+										<td class="freeze_a"></td>
+										<td class="position_a"></td>
+										<td class="float_a"></td>
+										<td class="ratio_a"></td>
+										<td class="withdraw_a"></td>
+										<td class="topup_a"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div id="d_page" class="text-right"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var index,url;
+		$(function() {
+
+			var as = getAssets();
+			$(".total_a").html(as.allMoney);
+			$(".deposit_a").html(as.bond);
+			$(".can_a").html(as.valid_amount);
+			$(".can1_a").html(as.disirable);
+			$(".freeze_a").html(as.frozen_amount);
+			$(".position_a").html(as.value);
+			$(".float_a").html(as.float);
+			$(".ratio_a").html(as.times);
+			$(".withdraw_a").html(as.total_withdraw);
+			$(".topup_a").html(as.total_amount);
+			$(".frozen_bond").html(as.frozen_bond);
+			$(".float_v").html(as.float);
+			//切换
+			
+			$("#myTab li").on("click", function() {
+				var i = $(this).index();
+				if(i != 5) {
+					page=0;
+					switch(i){
+						case 0:
+							index=i;
+							url=`${nozUrl}Api/users/entrustTodayList`;
+							getList(index,url,page);
+							break;
+						case 1:
+							index=i;
+							url=`${nozUrl}Api/users/entrustList`;
+							getList(index,url,page);
+							break;
+						case 2:
+							index=i;
+							url=`${nozUrl}Api/users/dealTodayList`;
+							getList(index,url,page);
+							break;
+						case 3:
+							index=i;
+							url=`${nozUrl}Api/users/dealList`;
+							getList(index,url,page);
+							break;
+						case 4:
+							index=i;
+							url=`${nozUrl}Api/users/capitalFlow`;
+							getList(index,url,page);
+							break;
+					}
+					$("#d_page").show();
+				} else {
+					$("#d_page").hide();
+					var as = getAssets();
+					$(".total_a").html(as.allMoney);
+					$(".deposit_a").html(as.bond);
+					$(".can_a").html(as.valid_amount);
+					$(".can1_a").html(as.desirable);
+					$(".freeze_a").html(as.frozen_amount);
+					$(".position_a").html(as.value);
+					$(".float_a").html(as.float);
+					$(".ratio_a").html(as.times);
+					$(".withdraw_a").html(as.total_withdraw);
+					$(".topup_a").html(as.total_amount);
+					$(".frozen_bond").html(as.frozen_bond);
+					$(".float_v").html(as.float);
+				}
+			})
+			$("#myTab li").eq(0).trigger("click");
+			//委托类型
+			$(".e_type").on("change", function() {
+				var dom = $(this).parents(".form");
+				if($(this).val() == 2) {
+					dom.find(".e_price").val("市场最优价").attr("disabled", "true");
+				} else {
+					dom.find(".e_price").val("").removeAttr("disabled");
+				}
+			})
+
+			var page = 1,
+				size = 10,
+				type = 2;
+
+			function setP(sum) {
+				layui.use(['laypage', 'layer'], function() {
+					var laypage = layui.laypage,
+						layer = layui.layer;
+					laypage.render({
+						elem: 'd_page',
+						count: sum,
+						curr: page,
+						groups: 3,
+						layout: ['refresh','skip', 'prev', 'page', 'next'],
+						theme: '#4C84FF',
+						jump: function(obj, first) {
+							page = obj.curr;
+							if(!first) {
+								getList(index,url,page-1);
+							}
+						}
+					});
+					$(".layui-laypage-skip input").on("input", function() {
+						$(this).val($(this).val().replace(/[^\d]/g, ''));
+						if($(this).val()==""||$(this).val()==0) {
+							$(this).val("1");
+						}
+					})
+				})
+			}
+
+
+			function getList(ii,url,page) {
+
+				$.ajax({
+					type:"post",
+					dataType:"json",
+					url:url,
+					data:{
+						userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+						page: page,
+					}, 
+					success:function(res) {
+						var str = '';
+						if(res.status == 200&&res.data.list.length!=0) {
+							setP(res.data.count);
+
+								var c;
+
+								switch(ii){
+									case 0:
+
+										for(var v of res.data.list){
+											if(v.type=="买入"){
+												c = "f_c_red";
+											}else{
+												c = "f_c_green";
+											}
+											str += `<tr>
+													<td>${v.order}</td>
+													<td>${v.time}</td>
+													<td>${v.code}</td>
+													<td>${v.name}</td>
+													<td class="${c}">${v.type}</td>
+													<td>${v.price}</td>
+													<td>${v.number}</td>
+													<td>${v.status}</td>
+												</tr>`												
+										}
+										break;
+									case 1:
+										for(var v of res.data.list){												
+											if(v.type=="买入"){
+												c = "f_c_red";
+											}else{
+												c = "f_c_green";
+											}
+											str += `<tr>
+													<td>${v.order}</td>
+													<td>${v.time}</td>
+													<td>${v.code}</td>
+													<td>${v.name}</td>
+													<td class="${c}">${v.type}</td>
+													<td>${v.price}</td>
+													<td>${v.number}</td>
+													<td>${v.status}</td>
+												</tr>`
+										}
+										break;
+									case 2:
+										for(var v of res.data.list){
+											var t1 = v.time.toString().split(" ")[0];
+											var t2 = v.time.toString().split(" ")[1];
+											var s = (parseFloat(v.deal_price)*parseFloat(v.number)).toFixed(2);
+											str += `<tr>
+													<td>${v.order}</td>
+													<td>
+														<span>${v.name}</span>
+														<span>${v.code}</span>
+													</td>
+
+													<td>${v.number}</td>
+													<td>
+														<span>${t1}</span>
+														<span>${t2}</span>
+													</td>
+													<td>${v.deal_price}</td>
+													<td>${s}</td>
+													<td>${v.buy_fee}</td>
+													<td>${v.stamp_duty}</td>
+													<td>${v.transfer_fee}</td>
+													<td>${v.inside_fee}</td>
+												</tr>`
+										}
+										break;
+									case 3:
+										for(var v of res.data.list){
+											var t1 = v.time.toString().split(" ")[0];
+											var t2 = v.time.toString().split(" ")[1];
+											var s = (parseFloat(v.deal_price)*parseFloat(v.number)).toFixed(2);
+											str += `<tr>
+													<td>${v.order}</td>
+													<td>
+														<span>${v.name}</span>
+														<span>${v.code}</span>
+													</td>
+
+													<td>${v.number}</td>
+													<td>
+														<span>${t1}</span>
+														<span>${t2}</span>
+													</td>
+													<td>${v.deal_price}</td>
+													<td>${s}</td>
+													<td>${v.buy_fee}</td>
+													<td>${v.stamp_duty}</td>
+													<td>${v.transfer_fee}</td>
+													<td>${v.inside_fee}</td>
+												</tr>`
+										}
+										console.log(str);
+										break;
+									case 4:
+										for(var v of res.data.list){												
+											str += `<tr>
+													<td>${v.time}</td>
+													<td>${v.number}</td>
+													<td>${v.fee}</td>
+													<td>${v.type}</td>
+												</tr>`
+										}
+										break;
+								}
+								
+
+
+							$('.t_body'+ii).html(str);
+						} else {
+							var x;
+							if(ii==0||ii==1){
+								x = 8;
+							}else if(ii==2||ii==3){
+								x=10;
+							}else{
+								x=4;
+							}
+							$(".t_body"+ii).html("<tr><td colspan="+x+" style='color:#ccc;text-align:center'>暂无数据...</td></tr>")
+							setP(0);
+						}
+					}
+					});
+			}
+		})
+	</script>
+
+</html>

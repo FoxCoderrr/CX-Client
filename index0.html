@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>股票交易</title>
+		<!-- 公共样式 -->
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="iconfont/iconfont.css" />
+		<!-- 页面样式 -->
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+	</head>
+
+	<body class="right_body">
+		<div class="wrap_box">
+			<div class="main index0_main clearfix">
+				<div class="cancel_btn">
+					<button class="btn" onclick="cancelSome()">撤单</button>
+					<button class="btn" onclick="cancelAll()">全撤</button>
+				</div>
+				<div class="index0_left">
+					<ul id="myTab" class="nav nav-tabs">
+						<li class="active">
+							<a href="#buy" data-toggle="tab">买入</a>
+						</li>
+						<li>
+							<a href="#sell" data-toggle="tab">卖出</a>
+						</li>
+						<li>
+							<a href="#cancel" data-toggle="tab">撤销委托</a>
+						</li>
+					</ul>
+					<div id="myTabContent" class="tab-content">
+						<div class="tab-pane in active" id="buy">
+							<div class="form buy_form">
+								<div class="form-group form-inline">
+									<label for="etype">委托类型：</label>
+									<select class="form-control e_type" id="etype">
+										<option value="1">委托单</option>
+										<option value="2">市价单</option>
+									</select>
+								</div>
+								<div class="form-group form-inline">
+									<label for="sname">股票名称：</label>
+									<input type="text" class="form-control s_name" id="sname" placeholder="" value="" disabled style="border: 0;">
+								</div>
+								<div class="form-group form-inline">
+									<label for="code">股票代码：</label>
+									<input type="text" class="form-control limit_num1 s_code" id="code" placeholder="" oninput="inputCode(event)">
+								</div>
+								<div class="form-group form-inline">
+									<label for="price">委托价格：</label>
+									<input type="text" class="form-control limit_coin e_price" id="price" placeholder="请输入委托价格" oninput="inputPrice(event)">
+								</div>
+								<div class="form-group form-inline">
+									<label for="can">可用资金：</label>
+									<input type="text" class="form-control can" id="can" placeholder="" value="6666.66" disabled>
+								</div>
+								<div class="form-group form-inline">
+									<label for="max">最大委托：</label>
+									<input type="text" class="form-control limit_coin max" id="max" placeholder="" value="" disabled>
+								</div>
+								<div class="form-group form-inline">
+									<label for="number">委托数量：</label>
+									<input type="text" class="form-control limit_coin number" id="number" placeholder="请输入委托数量">
+								</div>
+								<div class="form-group form-inline choices clearfix">
+									<button class="btn">1/2</button>
+									<button class="btn">1/3</button>
+									<button class="btn">1/4</button>
+									<button class="btn">全部</button>
+								</div>
+								<button class="btn sub_btn" onclick="subBuy(event)">买入</button>
+							</div>
+						</div>
+						<div class="tab-pane" id="sell">
+							<div class="form sell_form">
+								<div class="form-group form-inline">
+									<label for="etype1">委托类型：</label>
+									<select class="form-control e_type" id="etype1">
+										<option value="1">委托单</option>
+										<option value="2">市价单</option>
+									</select>
+								</div>
+								<div class="form-group form-inline">
+									<label for="sname1">股票名称：</label>
+									<input type="text" class="form-control s_name" id="sname1" placeholder="" value="" disabled style="border: 0;">
+								</div>
+								<div class="form-group form-inline">
+									<label for="code1">股票代码：</label>
+									<input type="text" class="form-control limit_num1 s_code" id="code1" placeholder="" oninput="inputCode(event)">
+								</div>
+								<div class="form-group form-inline">
+									<label for="price1">委托价格：</label>
+									<input type="text" class="form-control e_price" id="price1" placeholder="请输入委托价格">
+								</div>
+								<div class="form-group form-inline">
+									<label for="can1">可用资金：</label>
+									<input type="text" class="form-control can" id="can1" placeholder="" value="6666.66" disabled>
+								</div>
+								<div class="form-group form-inline">
+									<label for="max1">最大委托：</label>
+									<input type="text" class="form-control limit_coin max" id="max1" placeholder="" value="" disabled>
+								</div>
+								<div class="form-group form-inline">
+									<label for="number1">委托数量：</label>
+									<input type="text" class="form-control number" id="number1" placeholder="请输入委托数量">
+								</div>
+								<div class="form-group form-inline choices clearfix">
+									<button class="btn">1/2</button>
+									<button class="btn">1/3</button>
+									<button class="btn">1/4</button>
+									<button class="btn">全部</button>
+								</div>
+								<button class="btn sub_btn" onclick="subSell(event)">卖出</button>
+							</div>
+						</div>
+						<div class="tab-pane" id="cancel">
+							<div class="table-responsive">
+								
+								<table class="table">
+									<thead>
+										<tr>
+											<th class="c_p" onclick="chooseAll()">
+												<span class="iconfont icon-weixuanzhong"></span>
+											</th>
+											<th>委托单号</th>
+											<th>委托时间</th>
+											<th>股票代码</th>
+											<th>股票名称</th>
+											<th>委托类型</th>
+											<th>委托价位</th>
+											<th>委托数量</th>
+											<th>委托状态</th>
+										</tr>
+									</thead>
+									<tbody>
+										
+									</tbody>
+								</table>
+							</div>
+							<div id="d_page1" class="text-right"></div>
+						</div>
+					</div>
+				</div>
+				<div class="index0_mid market">
+					
+				</div>
+				<div class="index0_right">
+					<div class="table_buy">
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>股票</th>
+										<th>可买数量</th>
+										<th>今开价位</th>
+										<th>实时价位</th>
+										<th>涨跌</th>
+										<th>涨幅(%)</th>
+										<th>最高价位</th>
+										<th>最低价位</th>
+									</tr>
+								</thead>
+								<tbody class="t_body">
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="table_sell" style="display: none;">
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>股票</th>
+										<th>总持仓数</th>
+										<th>买入价位</th>
+										<th>当前价位</th>
+										<th>价位涨跌</th>
+										<th>涨幅(%)</th>
+										<th>浮动盈亏</th>
+										<th>持仓市值</th>
+										<th>开仓日期</th>
+									</tr>
+								</thead>
+								<tbody class="t_body1">
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div id="d_page" class="text-right"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var price_ = 0; //市价
+//		$(function() {
+			$("#can,#can1").val(getAssets().valid_amount)
+			//切换
+			$(".choices>.btn").on("click", function() {
+				var i = $(this).index();
+				var dom = $(this).parents(".form");
+				var tt = dom.find(".e_type").val();
+				if($("#myTab li.active").index() == 0) {
+					if(!dom.find(".s_name").val()) {
+						_msg("请输入股票代码");
+						return false;
+					}
+					if(tt == 1) {
+						if(!dom.find(".e_price").val() || dom.find(".e_price") == 0) {
+							_msg("请输入合理委托价格");
+							return false;
+						}
+					}
+					$(this).toggleClass("active").siblings(".btn").removeClass("active");
+					if($(this).hasClass("active")) {
+						var pprice, as;
+						switch(i) {
+							case 0:
+								as = parseFloat(getAssets().valid_amount) / 2;
+								break;
+							case 1:
+								as = parseFloat(getAssets().valid_amount) / 3;
+								break;
+							case 2:
+								as = parseFloat(getAssets().valid_amount) / 4;
+								break;
+							case 3:
+								as = parseFloat(getAssets().valid_amount) / 1;
+								break;
+						}
+						if(tt == 1) {
+							pprice = parseFloat(dom.find(".e_price").val());
+						} else {
+							pprice = price_;
+						}
+						dom.find(".number").val(parseInt(as / pprice/100)*100);
+					}else{
+						dom.find(".number").val("0");
+					}
+				} else if($("#myTab li.active").index() == 1) {
+					if(!dom.find(".s_name").val()) {
+						_msg("请输入股票代码");
+						return false;
+					}
+					$(this).toggleClass("active").siblings(".btn").removeClass("active");
+					if($(this).hasClass("active")) {
+						var mm = dom.find(".max").val();
+						var nn;
+						switch(i) {
+							case 0:
+								nn = parseFloat(mm) / 2;
+								break;
+							case 1:
+								nn = parseFloat(mm) / 3;
+								break;
+							case 2:
+								nn = parseFloat(mm) / 4;
+								break;
+							case 3:
+								nn = parseFloat(mm) / 1;
+								break;
+						}
+						if(nn<100){
+							nn=100;
+						}
+						dom.find(".number").val(nn.toFixed(2));						
+					}else{
+						dom.find(".number").val("");
+					}
+				}
+			})
+			$("#myTab li").on("click", function() {
+				clearInterval(window.t0);
+				var i = $(this).index();
+				page=0;
+				if(i == 2) {
+					$(".index0_mid,.index0_right").hide();
+					$(".cancel_btn").show();
+					getList1(0);
+				} else {
+					//$("#can,#can1").val(getAssets().valid_amount);
+					$(".index0_mid,.index0_right").show();
+					$(".cancel_btn").hide();
+					getList(i,page);
+					if(i == 0) {
+						$(".table_buy").show().siblings(".table_sell").hide();
+					} else {
+						$(".table_buy").hide().siblings(".table_sell").show();
+					}
+				}
+				getMarket(i);
+			})
+			//委托类型
+			$(".e_type").on("change", function() {
+				var dom = $(this).parents(".form");
+				if($(this).val() == 2) {
+					dom.find(".e_price").val("市场最优价").attr("disabled", "true");
+					if(price_){
+						var x = (parseFloat($("#can").val()) / parseFloat(price_)).toFixed(2);
+						$("#max").val(x);
+					}else{
+						$("#max").val("");
+					}
+				} else {
+					dom.find(".e_price").val("").removeAttr("disabled");
+					
+				}
+			})
+
+			var page = 0,
+				size = 10,
+				type = 2;
+
+			function setP(sum) {
+				layui.use(['laypage', 'layer'], function() {
+					var laypage = layui.laypage,
+						layer = layui.layer;
+					laypage.render({
+						elem: 'd_page',
+						count: sum,
+						curr: page,
+						groups: 2,
+						layout: ['refresh', 'skip', 'prev', 'page', 'next'],
+						theme: '#4C84FF',
+						jump: function(obj, first) {
+
+							page = obj.curr;
+							if(!first) {
+								var type = $(".nav-tabs li.active").index();
+								getList(type, page-1);
+							}
+						}
+					});
+					$(".layui-laypage-skip input").on("input", function() {
+						$(this).val($(this).val().replace(/[^\d]/g, ''));
+						if($(this).val() == "" || $(this).val() == 0) {
+							$(this).val("1");
+						}
+					})
+				})
+			}
+
+			//买列表  卖（持仓）列表
+			function getList(type,page) {
+				clearInterval(window.t1);
+				_loading1();
+				var url="";
+				var data={};
+				if(type==0){
+					url = `${nozUrl}Api/index/stock`;
+					
+				}else if(type==1){
+					url = `${nozUrl}Api/users/holdPositions`;
+				}
+				if($("#myTabContent .tab-pane").eq(type).find(".s_code").val()&&$(".tab-pane").eq(type).find(".s_code").val().length==6){
+					data={
+						userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+						page: page,
+						code:$("#myTabContent .tab-pane").eq(type).find(".s_code").val()
+					}
+				}else{
+					data={
+						userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+						page: page,
+					}
+				}
+				function timeStock(){
+					$.ajax({
+					type: "post",
+					dataType: "json",
+					url: url,
+					data: data,
+					timeout:"5000",
+					success: function(res) {
+						_closeLoading();
+						if(res.status == 200) {
+							setP(res.data.count);
+							var str = '';
+
+							if(type==0){
+								for(var i = 0; i < res.data.list.length;i++) {
+									var cc = res.data.list[i].short.substring(2);
+									var s0,s1;
+									if(res.data.list[i].fluctuation>0){
+										s0 = `<td class="f_c_red">+${res.data.list[i].fluctuation}</td>`
+									}else if(res.data.list[i].fluctuation<0){
+										s0 = `<td class="f_c_blue">${res.data.list[i].fluctuation}</td>`
+									}else{
+										s0 = `<td>${res.data.list[i].fluctuation}</td>`
+									}
+									if(res.data.list[i].decline>0){
+										s1 = `<td class="f_c_red">+${res.data.list[i].decline}</td>`
+									}else if(res.data.list[i].decline<0){
+										s1 = `<td class="f_c_blue">${res.data.list[i].decline}</td>`
+									}else{
+										s1 = `<td>${res.data.list[i].decline}</td>`
+									}
+									str += `<tr class="c_p" onclick="select(${i},'${cc}')">
+											<td class="f_c_yellow">
+												<span>${res.data.list[i].name}</span>
+												<span>${cc}</span>
+											</td>
+											<td>${res.data.list[i].buyNum}</td>
+											<td>${res.data.list[i].open}</td>
+											<td>${res.data.list[i].price}</td>
+											${s0}${s1}
+											<td>${res.data.list[i].top}</td>
+											<td>${res.data.list[i].down}</td>
+										</tr>`
+								}
+
+								$('.t_body').html(str);
+							}else{
+								for(var i = 0; i < res.data.list.length; i++) {
+
+									var s0,s1,s2;
+									res.data.list[i].UOD = parseFloat(res.data.list[i].UOD).toFixed(2);
+									res.data.list[i].UAD = parseFloat(res.data.list[i].UAD).toFixed(2);
+									if(res.data.list[i].UOD>0){
+										s0 = `<td class="f_c_red">+${res.data.list[i].UOD}</td>`
+									}else if(res.data.list[i].UOD<0){
+										s0 = `<td class="f_c_blue">${res.data.list[i].UOD}</td>`
+									}else{
+										s0 = `<td>${res.data.list[i].UOD}</td>`
+									}
+									if(res.data.list[i].UAD>0){
+										s1 = `<td class="f_c_red">+${res.data.list[i].UAD}</td>`
+									}else if(res.data.list[i].UAD<0){
+										s1 = `<td class="f_c_blue">${res.data.list[i].UAD}</td>`
+									}else{
+										s1 = `<td>${res.data.list[i].UAD}</td>`
+									}
+									if(res.data.list[i].floating>0){
+										s2 = `<td class="f_c_red">+${res.data.list[i].floating}</td>`
+									}else if(res.data.list[i].floating<0){
+										s2 = `<td class="f_c_blue">${res.data.list[i].floating}</td>`
+									}else{
+										s2 = `<td>${res.data.list[i].floating}</td>`
+									}
+									str += `<tr class="c_p" onclick="select(${i},'${res.data.list[i].code}')">
+											<td class="f_c_yellow">
+												<span>${res.data.list[i].name}</span>
+												<span>${res.data.list[i].code}</span>
+											</td>
+											<td>${res.data.list[i].num}</td>
+											<td>${res.data.list[i].price}</td>
+											<td>${res.data.list[i].price_now}</td>
+											${s0}${s1}${s2}
+											<td>${res.data.list[i].value}</td>
+											<td>${res.data.list[i].time}</td>
+										</tr>`
+								}
+								$('.t_body1').html(str);
+							}
+						} else {
+							if(type==0){								
+								$(".t_body1").html("<tr><td colspan='9' style='color:#ccc;text-align:center'>暂无数据...</td></tr>")
+							}else{
+								$(".t_body1").html("<tr><td colspan='9' style='color:#ccc;text-align:center'>暂无数据...</td></tr>")
+							}
+							_msg(res.msg);
+							setP(0);
+						}
+					},
+				})
+				}
+				timeStock();
+				window.t1 = setInterval(timeStock,3000);
+				
+			};
+
+			getList(0,page);
+
+			var page1 = 0,
+				size1 = 10;
+
+			function setP1(sum) {
+				layui.use(['laypage', 'layer'], function() {
+					var laypage = layui.laypage,
+						layer = layui.layer;
+					laypage.render({
+						elem: 'd_page1',
+						count: sum,
+						curr: page1,
+						layout: ['refresh','skip', 'prev', 'page', 'next'],
+						theme: '#4C84FF',
+						jump: function(obj, first) {
+							page1 = obj.curr;
+							if(!first) {
+								getList1(page1-1);
+							}
+						}
+					});
+					$(".layui-laypage-skip input").on("input", function() {
+						$(this).val($(this).val().replace(/[^\d]/g, ''));
+						if($(this).val() == "" || $(this).val() == 0) {
+							$(this).val("1");
+						}
+					})
+				})
+			}
+
+
+			function getList1(page) {
+				$("#cancel .table .iconfont").removeClass("icon-xuanzhongduigou").addClass("icon-weixuanzhong");
+				$.ajax({
+					type:"post",
+					url:`${nozUrl}Api/users/entrustingList`,
+					dataType:"json",
+					data:{
+						userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+						page: page,
+					},
+					success:function(res){
+						if(res.status == 200) {
+							if(res.data.list.length==0){
+								$("#cancel tbody").html("<tr><td colspan='9' style='color:#ccc;text-align:center'>暂无数据...</td></tr>");
+								setP1(0);
+								return false;
+							}
+						setP1(res.data.count);
+						var str = '';
+						for(var i = 0; i < res.data.list.length; i++) {
+							str += `<tr data-eid="${res.data.list[i].id}" class="c_p" onclick="choose('${i}','${res.data.list[i].id}')">
+										<td>
+											<span class="iconfont icon-weixuanzhong"></span>
+										</td>
+										<td>${res.data.list[i].order}</td>
+										<td>${res.data.list[i].time}</td>
+										<td>${res.data.list[i].code}</td>
+										<td>${res.data.list[i].name}</td>
+										<td class="f_c_red">${res.data.list[i].type}</td>
+										<td>${res.data.list[i].price}</td>
+										<td>${res.data.list[i].number}</td>
+										<td>${res.data.list[i].status}</td>
+									</tr>`
+						}
+						$('#cancel tbody').html(str);
+					} else {
+						$("#cancel tbody").html("<tr><td colspan='9' style='color:#ccc;text-align:center'>暂无数据...</td></tr>")
+						setP1(0);
+					}
+					}
+				});
+			}
+
+			getList1(0);
+
+//		})
+
+		//行情信息
+		function getMarket(i){
+//			var type = $("#myTab li.active").index();
+			var code = $(".tab-pane").eq(i).find(".s_code").val();
+			function timeAjax(){
+				$.ajax({
+						type: "post",
+						dataType: "json",
+						url: `${nozUrl}Api/users/hold`,
+						data: {
+							userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+							code: code
+						},
+						success: function(res) {
+							if(res.status!=200||res.data.stock==null){
+								noneMarket();
+								return false;
+							}
+							res.data.price.topUp = parseFloat(res.data.price.topUp).toFixed(2);
+							res.data.price.topDown = parseFloat(res.data.price.topDown).toFixed(2);
+							var str=`<ul class="b_ul">
+										<li class="clearfix">
+											<span class="pull-left f_c_red">买5</span>
+											<span class="pull-left f_c_red">${res.data.price.buy5_price}</span>
+											<span class="pull-right">${res.data.price.buy5_num}</span>
+										</li>
+										<li class="clearfix">
+											<span class="pull-left f_c_red">买4</span>
+											<span class="pull-left f_c_red">${res.data.price.buy4_price}</span>
+											<span class="pull-right">${res.data.price.buy4_num}</span>
+										</li>
+										<li class="clearfix">
+											<span class="pull-left f_c_red">买3</span>
+											<span class="pull-left f_c_red">${res.data.price.buy3_price}</span>
+											<span class="pull-right">${res.data.price.buy3_num}</span>
+										</li>
+										<li class="clearfix">
+											<span class="pull-left f_c_red">买2</span>
+											<span class="pull-left f_c_red">${res.data.price.buy2_price}</span>
+											<span class="pull-right">${res.data.price.buy2_num}</span>
+										</li>
+										<li class="clearfix">
+											<span class="pull-left f_c_red">买1</span>
+											<span class="pull-left f_c_red">${res.data.price.buy1_price}</span>
+											<span class="pull-right">${res.data.price.buy1_num}</span>
+										</li>
+									</ul>
+									<ul class="s_ul">
+										<li class="clearfix">
+											<span class="pull-left f_c_blue">卖1</span>
+											<span class="pull-left f_c_blue">${res.data.price.sell1_price}</span>
+											<span class="pull-right">${res.data.price.sell1_num}</span>
+										</li>
+										<li class="clearfix">
+											<span class="pull-left f_c_blue">卖2</span>
+											<span class="pull-left f_c_blue">${res.data.price.sell2_price}</span>
+											<span class="pull-right">${res.data.price.sell2_num}</span>
+										</li>
+										<li class="clearfix">
+											<span class="pull-left f_c_blue">卖3</span>
+											<span class="pull-left f_c_blue">${res.data.price.sell3_price}</span>
+											<span class="pull-right">${res.data.price.sell3_num}</span>
+										</li>
+										<li class="clearfix">
+											<span class="pull-left f_c_blue">卖4</span>
+											<span class="pull-left f_c_blue">${res.data.price.sell4_price}</span>
+											<span class="pull-right">${res.data.price.sell4_num}</span>
+										</li>
+										<li class="clearfix">
+											<span class="pull-left f_c_blue">卖5</span>
+											<span class="pull-left f_c_blue">${res.data.price.sell5_price}</span>
+											<span class="pull-right">${res.data.price.sell5_num}</span>
+										</li>
+									</ul>
+									<div class="clearfix mid_bot">
+										<div>现收 <span>${res.data.price.price}</span></div>
+										<div>涨停 <span>${res.data.price.topUp}</span></div>
+										<div>昨收 <span>${res.data.price.close}</span></div>
+										<div>跌停 <span>${res.data.price.topDown}</span></div>
+									</div>`;
+							if(i==0){
+								$(".market").html(str);
+							}else{
+								if(res.data.holdNum!=0){
+									$(".market").html(str);
+								}else{
+									noneMarket();
+								}
+							}
+						}
+					})
+			}
+			timeAjax();
+			window.t0 = setInterval(timeAjax,3000);
+		}
+
+		//输入股票代码
+		function inputCode(e) {
+			var code = $(e.target).val();
+			var dom = $(e.target).parents(".form");
+			var type = $("#myTab li.active").index();
+			var tt = dom.find(".e_type").val();
+			if(code.length == 6) {
+
+					getMarket(type);
+					$.ajax({
+						type: "post",
+						dataType: "json",
+						url: `${nozUrl}Api/users/hold`,
+						data: {
+							userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+							code: code
+						},
+						success: function(res) {
+
+							if(res.status == 200) {
+								price_ = res.data.price.price;
+								
+								if(res.data.stock==null){
+									_msg("未查询到相关股票信息");
+									return false;
+								}
+								if(type==1){
+									if(res.data.holdNum==0){
+										_msg("未查询到相关持股信息");
+										return false;
+									}
+								}
+								if(tt==1){
+
+									dom.find(".e_price").val(price_);
+									if(dom.find(".e_price").val() == "" || dom.find(".e_price").val() == 0) {
+										$("#max").val("0.00");
+									} else {
+										var can = parseFloat($("#can").val());
+										var p = parseFloat(dom.find(".e_price").val());
+										var n = (can / p).toFixed(2);
+										$("#max").val(n);
+									}
+								}else{
+									dom.find(".e_price").val("市场最优价");
+								}
+								dom.find(".s_name").val(res.data.stock.name);
+								page = 0;
+								getList(type,page);
+								if(type==1){
+									$("#max1").val(res.data.holdNum);								
+								}else{								
+									if($(".e_type").val() == 2) {
+										var x = (parseFloat($("#can").val()) / parseFloat(price_)).toFixed(2);
+										if(price_){
+											$("#max").val(x);									
+										}else{
+											$("#max").val("");									
+										}
+									}
+								}
+							} else {
+								_msg(res.msg);
+							}
+						}
+					})
+			}else{
+				noneMarket();
+				dom.find(".s_name").val("");
+				dom.find(".max").val("");
+				dom.find(".number").val("");
+				dom.find(".e_price").val("");
+				price_=0;
+				
+			}
+		}
+		//选中股票
+		function select(i,code) {
+
+			clearInterval(window.t0);
+			_loading1();
+			//$(".index0_right .table tbody tr").eq(i).addClass("t_active").siblings("tr").removeClass("t_active");
+			$.ajax({
+					type: "post",
+					dataType: "json",
+					url: `${nozUrl}Api/users/hold`,
+					data: {
+						userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+						code: code
+					},
+					success: function(res) {
+
+						_closeLoading();
+						if(res.status == 200) {
+							var type = $("#myTab li.active").index();
+							var dom = $("#myTabContent .tab-pane").eq(type);
+							var tt = dom.find(".e_type").val();
+							price_ = res.data.price.price;
+							if(tt==1){
+								dom.find(".e_price").val(price_);
+
+								if(dom.find(".e_price").val() == "" || dom.find(".e_price").val() == 0) {
+									$("#max").val("0.00");
+								} else {
+									var can = parseFloat($("#can").val());
+									var p = parseFloat(dom.find(".e_price").val());
+									var n = (can / p).toFixed(2);
+									$("#max").val(n);
+								}
+							}else{
+								dom.find(".e_price").val("市场最优价");
+							}
+							dom.find(".s_name").val(res.data.stock.name);
+							dom.find(".s_code").val(res.data.stock.code);
+							
+							if(type==1){
+								$("#max1").val(res.data.holdNum);								
+							}else{
+								if($(".e_type").val() == 2) {
+									var x = (parseFloat($("#can").val()) / parseFloat(price_)).toFixed(2);
+									if(price_){
+										$("#max").val(x);									
+									}else{
+										$("#max").val("");									
+									}
+								}
+							}
+							getMarket(type);
+						} else {
+							_msg(res.msg);
+						}
+					}
+				})
+		}
+
+		//买  价格输入
+		function inputPrice(e) {
+			if($(e.target).val() == "" || $(e.target).val() == 0) {
+				$("#max").val("0.00");
+			} else {
+				var can = parseFloat($("#can").val());
+				var p = parseFloat($(e.target).val());
+				var n = (can / p).toFixed(2);
+				$("#max").val(n);
+			}
+		}
+
+		function subBuy(e) {
+			var dom = $(e.target).parents(".form");
+			var e_type = dom.find(".e_type").val();
+			var s_name = dom.find(".s_name").val();
+			var s_code = dom.find(".s_code").val();
+			var e_price = dom.find(".e_price").val();
+			var can = dom.find(".can").val();
+			var max = dom.find(".max").val();
+			var number = dom.find(".number").val();
+			var i = dom.find(".choices .btn.active").index();
+			if(e_type && s_code && e_price && can && number) {
+				if(Number(number) > Number(max)) {
+					_msg("余额不足");
+					return false;
+				}
+				if(Number(number)%100!=0){
+					_msg("请输入整百倍数数量");
+					return false;
+				}
+				var str = "";
+				str = `<ul class="dia_ul">
+						<li>
+							<span>股票名称：</span>
+							<span>${s_name}</span>
+						</li>
+						<li>
+							<span>股票代码：</span>
+							<span>${s_code}</span>
+						</li>
+						<li>
+							<span>委托价格：</span>
+							<span>${e_price}</span>
+						</li>
+						<li>
+							<span>委托数量：</span>
+							<span>${number}</span>
+						</li>
+					</ul>
+					<div class="form-group form-inline" style="margin-bottom:0;">
+						<label for="tpwd">交易密码：</label>
+						<input type="password" class="form-control tpwd" id="t_pwd" placeholder="" oninput="inputPwd()"/>
+					</div>
+					<p class="f_c_red text-center tip" style="display:none">请输入交易密码</p>`
+				layer.confirm(str, {
+					title: "委托单买入",
+					btn: ['确定', '取消'],
+					closeBtn: 0,
+					offset: "t",
+				}, function(index, layero) {
+					// 确定
+					_loading1();
+					var pwd = $("#t_pwd").val();
+					if(!pwd) {
+						//						_msg("请输入交易密码");
+						$(".tip").show();
+						return false;
+					}
+					var url, price;
+					if(e_type == 1) {
+						url = `${nozUrl}Api/deal/purchase`;
+						price = e_price;
+					} else {
+						url = `${nozUrl}Api/deal/buyInNow`;
+						price = price_;
+					}
+					$.ajax({
+						type: "post",
+						dataType: "json",
+						url: url,
+						data: {
+							userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+							code: s_code,
+							number: number,
+							price: price,
+							tradePassword: pwd
+						},
+						success: function(res) {
+							$("#can,#can1").val(getAssets().valid_amount)
+							_closeLoading();
+							_msg(res.msg);
+						}
+					})
+					layer.close(index);
+				}, function(index) {
+					// 取消
+				});
+
+			} else {
+				_msg("请输入完整信息");
+			}
+
+		}
+
+		function subSell(e) {
+			var dom = $(e.target).parents(".form");
+			var e_type = dom.find(".e_type").val();
+			var s_name = dom.find(".s_name").val();
+			var s_code = dom.find(".s_code").val();
+			var e_price = dom.find(".s_code").val();
+			var can = dom.find(".can").val();
+			var max = dom.find(".max").val();
+			var number = dom.find(".number").val();
+			var i = dom.find(".choices .btn.active").index();
+			if(e_type && s_code && e_price && can && number) {
+				if(Number(number)<=0){
+					_msg("请输入合理委托数量");return false;
+				}
+
+				var str = "";
+				str = `<ul class="dia_ul">
+						<li>
+							<span>股票名称：</span>
+							<span>${s_name}</span>
+						</li>
+						<li>
+							<span>股票代码：</span>
+							<span>${s_code}</span>
+						</li>
+						<li>
+							<span>委托价格：</span>
+							<span>${e_price}</span>
+						</li>
+						<li>
+							<span>委托数量：</span>
+							<span>${number}</span>
+						</li>
+					</ul>
+					<div class="form-group form-inline" style="margin-bottom:0;">
+						<label for="tpwd">交易密码：</label>
+						<input type="password" class="form-control tpwd" id="t_pwd1" placeholder="" oninput="inputPwd()"/>
+					</div>
+					<p class="f_c_red text-center tip" style="display:none">请输入交易密码</p>`
+				layer.confirm(str, {
+					title: "委托单卖出",
+					btn: ['确定', '取消'],
+					closeBtn: 0,
+					offset: "t",
+				}, function(index, layero) {
+					// 确定
+					_loading1();
+					var pwd = $("#t_pwd1").val();
+					var url, price;
+					if(e_type == 1) {
+						url = `${nozUrl}Api/deal/sellOut`;
+						price = e_price;
+					} else {
+						url = `${nozUrl}Api/deal/sellOutNow`;
+						price = price_;
+					}
+					if(pwd==""){
+						_msg("请输入密码");return false;
+					}
+					$.ajax({
+						type: "post",
+						dataType: "json",
+						url: url,
+						data: {
+							userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+							code: s_code,
+							number: number,
+							price: price,
+							tradePassword: pwd
+						},
+						success: function(res) {
+							$("#can,#can1").val(getAssets().valid_amount);
+							_closeLoading();
+							_msg(res.msg);
+							
+							$.ajax({
+								type: "post",
+								dataType: "json",
+								url: `${nozUrl}Api/users/hold`,
+								data: {
+									userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+									code: s_code
+								},
+								success: function(res) {
+									if(res.status == 200) {
+										var type = $("#myTab li.active").index();
+										if(type==1){
+											$("#max1").val(res.data.holdNum);								
+										}
+									} else {
+										_msg(res.msg);
+									}
+								}
+							})
+							
+						}
+					})
+					layer.close(index);
+				}, function(index) {
+					// 取消
+				});
+
+			} else {
+				_msg("请输入完整信息");
+			}
+		}
+
+		function inputPwd() {
+			$(".tip").hide();
+		}
+
+		function testAll() {
+			var dom = $("#cancel tbody tr"),
+				bool = true;
+			for(var v of dom) {
+				if($(v).find(".iconfont").hasClass("icon-weixuanzhong")) {
+					bool = false;
+					break;
+				}
+			}
+			return bool;
+		}
+		//全选
+		function chooseAll() {
+			if($("#cancel th .iconfont").hasClass("icon-weixuanzhong")) {
+				$("#cancel .table .iconfont").removeClass("icon-weixuanzhong").addClass("icon-xuanzhongduigou");
+			} else {
+				$("#cancel .table .iconfont").removeClass("icon-xuanzhongduigou").addClass("icon-weixuanzhong");
+			}
+		}
+		//选中单个
+		function choose(i) {
+			var dom = $("#cancel tbody tr").eq(i).find(".iconfont");
+			if(dom.hasClass("icon-weixuanzhong")) {
+				dom.removeClass("icon-weixuanzhong").addClass("icon-xuanzhongduigou");
+				if(testAll()) {
+					$("th .iconfont").removeClass("icon-weixuanzhong").addClass("icon-xuanzhongduigou");
+				}
+			} else {
+				dom.removeClass("icon-xuanzhongduigou").addClass("icon-weixuanzhong");
+				$("th .iconfont").removeClass("icon-xuanzhongduigou").addClass("icon-weixuanzhong");
+			}
+		}
+		//撤单
+		function cancelSome() {
+			var dom = $("#cancel tbody tr"),arr=[];
+			for(var v of dom){
+				if($(v).find(".iconfont").hasClass("icon-xuanzhongduigou")){
+					arr.push($(v).data("eid"));
+				}
+			}
+			if(arr.length==0){
+				_msg("请选择委托");return false;
+			}
+			layer.confirm('您确认要撤销选中订单吗？', {
+				title: "撤销",
+				btn: ['确定', '取消'],
+				closeBtn: 0,
+				offset: "t"
+			}, function(index, layero) {
+				// 确定
+//				var arr_ = arr.join(",");
+				$.ajax({
+						type: "post",
+						dataType: "json",
+						url: `${nozUrl}Api/deal/revokeEntrust`,
+						data: {
+							userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+							codes: arr,
+						},
+						success: function(res) {
+							_closeLoading();
+							_msg(res.msg);
+							layer.close(index);
+							getList1(page1-1);
+						}
+					})
+			}, function(index) {
+				// 取消
+			});
+		}
+
+		function cancelAll() {
+			var dom = $("#cancel tbody tr"),arr=[];
+			for(var v of dom){
+				if($(v).find(".iconfont").hasClass("icon-xuanzhongduigou")){
+					arr.push($(v).data("eid"));
+				}
+			}
+			if(arr.length==0){
+				_msg("您没有委托订单");return false;
+			}
+			layer.confirm('您确认要撤销全部订单吗？', {
+				title: "撤销",
+				btn: ['确定', '取消'],
+				closeBtn: 0,
+				offset: "t"
+			}, function(index, layero) {
+				// 确定
+				$.ajax({
+						type: "post",
+						dataType: "json",
+						url: `${nozUrl}Api/deal/revokeAll`,
+						data: {
+							userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+						},
+						success: function(res) {
+							_closeLoading();
+							_msg(res.msg);
+							layer.close(index);
+							page1=0;
+							getList1(page1);
+						}
+					})
+				layer.close(index);
+			}, function(index) {
+				// 取消
+			});
+		}
+		
+		function noneMarket(){
+			clearInterval(window.t0);
+			var str=`<ul class="b_ul">
+						<li class="clearfix">
+							<span class="pull-left f_c_red">买5</span>
+							<span class="pull-left f_c_red">--</span>
+							<span class="pull-right">--</span>
+						</li>
+						<li class="clearfix">
+							<span class="pull-left f_c_red">买5</span>
+							<span class="pull-left f_c_red">--</span>
+							<span class="pull-right">--</span>
+						</li>
+						<li class="clearfix">
+							<span class="pull-left f_c_red">买5</span>
+							<span class="pull-left f_c_red">--</span>
+							<span class="pull-right">--</span>
+						</li>
+						<li class="clearfix">
+							<span class="pull-left f_c_red">买5</span>
+							<span class="pull-left f_c_red">--</span>
+							<span class="pull-right">--</span>
+						</li>
+						<li class="clearfix">
+							<span class="pull-left f_c_red">买5</span>
+							<span class="pull-left f_c_red">--</span>
+							<span class="pull-right">--</span>
+						</li>
+					</ul>
+					<ul class="s_ul">
+						<li class="clearfix">
+							<span class="pull-left f_c_blue">卖5</span>
+							<span class="pull-left f_c_blue">--</span>
+							<span class="pull-right">--</span>
+						</li>
+						<li class="clearfix">
+							<span class="pull-left f_c_blue">卖5</span>
+							<span class="pull-left f_c_blue">--</span>
+							<span class="pull-right">--</span>
+						</li>
+						<li class="clearfix">
+							<span class="pull-left f_c_blue">卖5</span>
+							<span class="pull-left f_c_blue">--</span>
+							<span class="pull-right">--</span>
+						</li>
+						<li class="clearfix">
+							<span class="pull-left f_c_blue">卖5</span>
+							<span class="pull-left f_c_blue">--</span>
+							<span class="pull-right">--</span>
+						</li>
+						<li class="clearfix">
+							<span class="pull-left f_c_blue">卖5</span>
+							<span class="pull-left f_c_blue">--</span>
+							<span class="pull-right">--</span>
+						</li>
+					</ul>
+					<div class="clearfix mid_bot">
+						<div>现收 <span>--</span></div>
+						<div>涨停 <span>--</span></div>
+						<div>昨收 <span>--</span></div>
+						<div>跌停 <span>--</span></div>
+					</div>`;
+			$(".market").html(str);
+		}
+		noneMarket();
+	</script>
+
+</html>

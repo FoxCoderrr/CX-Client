@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>股票交易</title>
+		<!-- 公共样式 -->
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="iconfont/iconfont.css" />
+		<!-- 页面样式 -->
+		<link rel="stylesheet" type="text/css" href="css/tline.css" />
+	</head>
+
+	<body class="w_body" onclick="reset(event)">
+		<div class="wrap_box">
+			<div class="main">
+				<div class="info_div">
+					<span>分时走势</span>
+					<span class="f_c_yellow name"></span>
+					<span class="f_c_yellow">分时</span>
+					<span class="f_c_yellow">均价：
+						<span class="avg"></span>
+					</span>
+					<span>最新：
+						<span class="new_price"></span>
+					</span>
+					<span class="f_r f_c_red c_p to_big">
+						<span class="iconfont icon-fangda"></span>放大
+					</span>
+					<span class="f_r f_c_red c_p to_small">
+						<span class="iconfont icon-suoxiao"></span>缩小
+					</span>
+					<span class="f_r f_c_red c_p" onclick="back()">
+						<span class="iconfont icon-liebiao2"></span>返回列表
+					</span>
+				</div>
+				<div class="div clearfix" oncontextmenu="rightClick(event)">
+					<div id="chart" class="f_l"></div>
+					<div class="right_div">
+						<div class="ct_right1" style="display: none;">
+							<div class="d_title ta_c show1 name_title"></div>
+							<div class="d_title ta_l show2" style="padding-left:2px;">主力大单</div>
+							<div class="d_con">
+								<div class="d1 clearfix show1">
+									<span class="f_l">
+            						<span class="f_l">委比</span>
+									<span class="f_r f_c_red">--</span>
+									</span>
+									<span class="f_r">
+            						<span class="f_l">委差</span>
+									<span class="f_r f_c_red">--</span>
+									</span>
+								</div>
+								<div class="d1 d2 clearfix show2">
+									<span class="f_l">
+            						<span class="f_l">时间</span>
+									<span class="f_r">名称</span>
+									</span>
+									<span class="f_r">
+            						<span class="f_l">价格</span>
+									<span class="f_r">现量</span>
+									</span>
+								</div>
+								<div class="d_list">
+									<ul class="show1 sells">
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">卖5</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">卖4</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">卖3</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">卖2</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">卖1</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">--</span>
+											</span>
+										</li>
+									</ul>
+									<ul class="show1 buys">
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">买1</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">买2</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">买3</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">买4</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">买5</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">--</span>
+											</span>
+										</li>
+									</ul>
+									<ul class="ul1 show1 other1">
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">现价</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">今开</span>
+											<span class="f_r f_c_green">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">涨跌</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">最高</span>
+											<span class="f_r f_c_green">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+            								<span class="f_l">涨幅</span>
+											<span class="f_r f_c_red">--%</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">最低</span>
+											<span class="f_r f_c_green">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">总量</span>
+											<span class="f_r f_c_yellow">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">量比</span>
+											<span class="f_r f_c_green">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">外盘</span>
+											<span class="f_r f_c_red">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">内盘</span>
+											<span class="f_r f_c_green">--</span>
+											</span>
+										</li>
+									</ul>
+									<ul class="ul1 show1 other2">
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">市盈</span>
+											<span class="f_r">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">股本</span>
+											<span class="f_r">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">换手</span>
+											<span class="f_r">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">流通</span>
+											<span class="f_r">--</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">净资</span>
+											<span class="f_r">--</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">收益</span>
+											<span class="f_r">--</span>
+											</span>
+										</li>
+									</ul>
+									<ul class="ul1 ul2 show2 other3">
+
+									</ul>
+
+									<div class="d_menu">
+										<span class="c_p" onclick="show(1)">笔</span>
+										<span class="c_p" onclick="show(2)">单</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="spe_right ct_right2" style="display: none;">
+							<div class="d_title ta_c name_title"></div>
+							<ul class="ul three_info1">
+								<li class="clearfix">
+									<span class="f_l">最新指数</span>
+									<span class="f_r">--</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">指数涨跌</span>
+									<span class="f_r">--</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">涨跌幅度</span>
+									<span class="f_r">--%</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">昨日收盘</span>
+									<span class="f_r white">--</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">今日开盘</span>
+									<span class="f_r">--</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">今日最高</span>
+									<span class="f_r">--</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">今日最低</span>
+									<span class="f_r">--</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">总成交量</span>
+									<span class="f_r">--</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">总成交额</span>
+									<span class="f_r">--</span>
+								</li>
+							</ul>
+							<ul class="three_info2">
+								<li class="clearfix">
+									<span class="f_l">上涨家数</span>
+									<span class="f_r f_c_white">--</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">平盘家数</span>
+									<span class="f_r f_c_white">--</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">下跌家数</span>
+									<span class="f_r f_c_white">--</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mouse_div mouse_div1" onclick="stop(event)">
+			<ul>
+				<li class="li" onclick="addMy()">加入自选股&nbsp;&nbsp;&nbsp;insert</li>
+				<li class="f_c_gray">删除自选股&nbsp;&nbsp;&nbsp;del</li>
+				<li class="li">实时走势</li>
+				<li class="li" onclick="toKline(1)">日线</li>
+				<li class="li" onclick="toKline(2)">周线</li>
+				<li class="li" onclick="toKline(3)">月线</li>
+			</ul>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/echarts.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var active_index = 0;
+		var page = 0;
+		var myChart, avg;
+		var s_name;
+		var otherArr1=[];
+		//转K线
+		function toKline(i){
+			sessionStorage.setItem("ktype",i);
+			$(window.parent.document).find(".market").attr("src","kline.html");
+		}
+		function first(){
+			let st = sessionStorage.getItem("activeshort");
+			if(st == "sh000001" || st == "sz399001" || st == "sz399300") {
+				$(".ct_right2").show();
+				$(".ct_right1").hide();
+				fun2();
+				window.right_time3 = setInterval(() => {
+					fun2();
+				}, 2000)
+			} else {
+				$(".ct_right1").show();
+				$(".ct_right2").hide();
+				fun();
+			}
+		}
+		first();
+		fun();
+		window.right_time1 = setInterval(() => {
+			fun();
+		}, 2000)
+		function back() {
+			$(window.parent.document).find(".market").attr("src", "stock.html");
+		}
+		
+		function reset() {
+			$(".mouse_div1").hide();
+			$(".mouse_div2").hide();
+		}
+
+		function stop(e) {
+			e.stopPropagation();
+		}
+
+		function position(o) {
+			var w = $("body").width();
+			if(o.screenX + 202 > w) {
+				return {
+					left: o.x - 202,
+					top: o.y
+				};
+			} else {
+				return {
+					left: o.x,
+					top: o.y
+				};
+			}
+		}
+		//添加自选
+		function addMy(){
+			reset();
+			var tem_arr = JSON.parse(localStorage.getItem("my"));
+			var bool = true;
+			for(let v of tem_arr){
+				if(v == sessionStorage.getItem("activecode")){
+					bool = false;
+					break;
+				}
+			}
+			if(bool){
+				tem_arr.push(sessionStorage.getItem("activecode"));
+				localStorage.setItem("my",JSON.stringify(tem_arr));
+			}
+		}
+		function fun() {
+			var sellArr1 = [{
+						index: "卖5",
+						number: "--",
+						price: "--"
+					},
+					{
+						index: "卖4",
+						number: "--",
+						price: "--"
+					},
+					{
+						index: "卖3",
+						number: "--",
+						price: "--"
+					},
+					{
+						index: "卖2",
+						number: "--",
+						price: "--"
+					},
+					{
+						index: "卖1",
+						number: "--",
+						price: "--"
+					}
+				],
+				buyArr1 = [{
+						index: "买1",
+						number: "--",
+						price: "--"
+					},
+					{
+						index: "买2",
+						number: "--",
+						price: "--"
+					},
+					{
+						index: "买3",
+						number: "--",
+						price: "--"
+					},
+					{
+						index: "买4",
+						number: "--",
+						price: "--"
+					},
+					{
+						index: "买5",
+						number: "--",
+						price: "--"
+					}
+				];
+			$.ajax({
+				cache: true,
+				url: "http://qt.gtimg.cn/q=" + sessionStorage.getItem("activeshort"),
+				type: "GET",
+				dataType: "script",
+				success: function() {
+					let a = eval("v_" + sessionStorage.getItem("activeshort")).split("~");
+					for(let i in sellArr1) {
+						sellArr1[i].price = a[27 - i * 2];
+						sellArr1[i].number = a[28 - i * 2];
+					}
+					for(let i in buyArr1) {
+						buyArr1[i].price = a[i * 2 + 9];
+						buyArr1[i].number = a[i * 2 + 10];
+					}
+					if(a[36] >= 10000) {
+						a[36] = parseFloat(a[36] / 10000).toFixed(2) + "万"
+					}
+					if(a[37] > 10000) {
+						if(parseFloat(a[37] % 10000)) {
+							a[37] = parseFloat(a[37] / 10000).toFixed(1);
+						} else {
+							a[37] = parseFloat(a[37] / 10000);
+						}
+						a[37] = parseFloat(a[37]) + "亿";
+					} else {
+						a[37] = a[37] + "万";
+					}
+					otherArr1 = [
+						a[5],
+						a[47],
+						a[4],
+						a[48],
+						a[3],
+						a[31],
+						a[41],
+						a[32],
+						a[34],
+						"--",
+						"--",
+						a[7],
+						a[8],
+						a[39],
+						"--",
+						a[38],
+						a[44],
+						"--",
+						"--",
+						a[36],
+						a[37]
+					];
+
+					$(".sells").html(`<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">卖5</span>
+											<span class="f_r f_c_red">${sellArr1[0].price}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">${sellArr1[0].number}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">卖4</span>
+											<span class="f_r f_c_red">${sellArr1[1].price}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">${sellArr1[1].number}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">卖3</span>
+											<span class="f_r f_c_red">${sellArr1[2].price}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">${sellArr1[2].number}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">卖2</span>
+											<span class="f_r f_c_red">${sellArr1[3].price}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">${sellArr1[3].number}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">卖1</span>
+											<span class="f_r f_c_red">${sellArr1[4].price}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">${sellArr1[4].number}</span>
+											</span>
+										</li>`)
+					$(".buys").html(`<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">买1</span>
+											<span class="f_r f_c_red">${buyArr1[0].price}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">${buyArr1[0].number}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">买2</span>
+											<span class="f_r f_c_red">${buyArr1[1].price}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">${buyArr1[1].number}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">买3</span>
+											<span class="f_r f_c_red">${buyArr1[2].price}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">${buyArr1[2].number}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">买4</span>
+											<span class="f_r f_c_red">${buyArr1[3].price}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">${buyArr1[3].number}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">买5</span>
+											<span class="f_r f_c_red">${buyArr1[4].price}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l"></span>
+											<span class="f_r f_c_yellow">${buyArr1[4].number}</span>
+											</span>
+										</li>`)
+					$(".new_price").html(otherArr1[4]);
+					$(".other1").html(`<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">现价</span>
+											<span class="f_r f_c_red">${otherArr1[4]}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">今开</span>
+											<span class="f_r f_c_green">${otherArr1[0]}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">涨跌</span>
+											<span class="f_r f_c_red">${otherArr1[5]}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">最高</span>
+											<span class="f_r f_c_green">${otherArr1[6]}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+            								<span class="f_l">涨幅</span>
+											<span class="f_r f_c_red">${otherArr1[7]}%</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">最低</span>
+											<span class="f_r f_c_green">${otherArr1[8]}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">总量</span>
+											<span class="f_r f_c_yellow">${otherArr1[9]}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">量比</span>
+											<span class="f_r f_c_green">${otherArr1[10]}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">外盘</span>
+											<span class="f_r f_c_red">${otherArr1[11]}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">内盘</span>
+											<span class="f_r f_c_green">${otherArr1[12]}</span>
+											</span>
+										</li>`)
+					$(".other2").html(`<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">市盈</span>
+											<span class="f_r">${otherArr1[13]}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">股本</span>
+											<span class="f_r">${otherArr1[14]}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">换手</span>
+											<span class="f_r">${otherArr1[15]}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">流通</span>
+											<span class="f_r">${otherArr1[16]}</span>
+											</span>
+										</li>
+										<li class="clearfix">
+											<span class="f_l">
+                							<span class="f_l">净资</span>
+											<span class="f_r">${otherArr1[17]}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l">收益</span>
+											<span class="f_r">${otherArr1[18]}</span>
+											</span>
+										</li>`)
+				}
+			});
+		}
+
+		function fun1() {
+			var short = sessionStorage.getItem("activeshort");
+
+			$.ajax({
+				cache: true,
+				url: `https://vip.stock.finance.sina.com.cn/quotes_service/view/CN_BillList.php?sort=ticktime&symbol=${short}&num=10`,
+				type: 'GET',
+				dataType: 'script',
+				success: function() {
+					var list = eval("bill_detail_list");
+					for(let v of list) {
+						v[0] = v[0].substr(0, 5);
+						v[1] = v[1] / 100;
+						v[2] = parseFloat(v[2]).toFixed(2);
+					}
+					var str = "";
+					for(let v of list) {
+						var cls = "";
+						if(v[3] > 0) {
+							cls = "f_c_red"
+						} else if(v[3] < 0) {
+							cls = "f_c_green"
+						} else {
+							cls = "f_c_white"
+						}
+						str += `<li class="clearfix">
+											<span class="f_l spe">
+                							<span class="f_l">${v[0]}</span>
+											<span class="f_r f_c_yellow">${s_name}</span>
+											</span>
+											<span class="f_r">
+                							<span class="f_l ${cls}">${v[2]}</span>
+											<span class="f_r ${cls}">${v[1]}</span>
+											</span>
+										</li>`
+					}
+					$(".other3").html(str);
+				}
+			});
+		}
+
+		function fun2() {
+			var spe_arr;
+			$.ajax({
+				cache: true,
+				url: "http://hq.sinajs.cn/rn=1550024574975&list=sh000001_zdp,sz399107_zdp,sz399001_zdp,sz399300_zdp",
+				type: 'GET',
+				dataType: 'script',
+				success: function() {
+					if(sessionStorage.getItem("activeshort") == "sh000001") {
+						spe_arr = eval("hq_str_sh000001_zdp").split(",")
+					} else if(sessionStorage.getItem("activeshort")  == "sz399001") {
+						spe_arr = eval("hq_str_sz399001_zdp").split(",")
+					} else {
+						spe_arr = eval("hq_str_sz399300_zdp").split(",")
+					}
+					var cls = "";
+					if(otherArr1[5]>0){
+						cls = "f_c_red"
+					}else if(otherArr1[5]<0){
+						cls = "f_c_green"
+					}else{
+						cls = "f_c_white"
+					}
+
+					$(".three_info1").html(`<li class="clearfix">
+									<span class="f_l">最新指数</span>
+									<span class="f_r f_c_red">${otherArr1[4]||'--'}</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">指数涨跌</span>
+									<span class="f_r ${cls}">${otherArr1[5]||'--'}</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">涨跌幅度</span>
+									<span class="f_r ${cls}">${otherArr1[7]||'--'}%</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">昨日收盘</span>
+									<span class="f_r white">${otherArr1[2]||'--'}</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">今日开盘</span>
+									<span class="f_r f_c_red">${otherArr1[0]||'--'}</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">今日最高</span>
+									<span class="f_r f_c_red">${otherArr1[6]||'--'}</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">今日最低</span>
+									<span class="f_r f_c_red">${otherArr1[8]||'--'}</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">总成交量</span>
+									<span class="f_r f_c_red">${otherArr1[19]||'--'}</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">总成交额</span>
+									<span class="f_r f_c_red">${otherArr1[20]||'--'}</span>
+								</li>`);
+					$(".three_info2").html(`<li class="clearfix">
+									<span class="f_l">上涨家数</span>
+									<span class="f_r f_c_white">${spe_arr[0]}</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">平盘家数</span>
+									<span class="f_r f_c_white">${spe_arr[1]}</span>
+								</li>
+								<li class="clearfix">
+									<span class="f_l">下跌家数</span>
+									<span class="f_r f_c_white">${spe_arr[2]}</span>
+								</li>`);
+					
+				}
+			});
+		}
+
+		$(".to_big").on("click", function() {
+			$(this).hide();
+			$(".to_small").show();
+			$(".right_div").hide();
+			$(".info_div").css("padding", "0px 76px 0px 66px");
+			$("#chart").css("width", "100%");
+			myChart.resize();
+		})
+		$(".to_small").on("click", function() {
+			$(this).hide();
+			$(".to_big").show();
+			$(".right_div").show();
+			$(".info_div").css("padding", "0px 276px 0px 66px");
+			$("#chart").css("width", "calc(100% - 210px)");
+			myChart.resize();
+		})
+
+		function show(i) {
+
+			clearInterval(window.right_time2);
+			clearInterval(window.right_time3);
+
+			if(i == 1) {
+				$(".show1").show();
+				$(".show2").hide();
+				fun();
+				
+			} else {
+				$(".show2").show();
+				$(".show1").hide();
+				fun1();
+				window.right_time2 = setInterval(() => {
+					fun1();
+				}, 2000)
+			}
+		}
+		//列表  鼠标右键
+		function rightClick(e) {
+			$(".mouse_div1").css(position(e)).show();
+		}
+
+		time_line(sessionStorage.getItem("activeshort"));
+		// 分时
+		function time_line(short) {
+			clearInterval(window.tlineTime);
+			funT();
+			window.tlineTime = setInterval(()=>{
+				funT();
+			},10000)
+			function funT(){				
+			 	$.get(
+					"http://web.ifzq.gtimg.cn/appstock/app/minute/query", {
+						_var: "min_data_" + short,
+						code: short
+					},
+					function(rawData) {
+						s_name = $.parseJSON(rawData.slice(18)).data[short]["qt"][short][1];
+						$(".name").html($.parseJSON(rawData.slice(18)).data[short]["qt"][short][1]);
+						$(".name_title").html(`${sessionStorage.getItem("activeshort").substr(2)}&nbsp;&nbsp;${$.parseJSON(rawData.slice(18)).data[short]["qt"][short][1]}`)
+						time_line_k(rawData, short);
+					}
+				)
+			}
+
+		};
+
+		function time_line_k(rawData, short) {
+			myChart = echarts.init(document.getElementById("chart"));
+			window.onresize = myChart.resize;
+			var rate_min, rate_max, price_min, price_max;
+			var rate_int, price_int;
+			if(short == 0) {
+				var arr = rawData;
+				var yesterday = info.close;
+				var up_amplitude = Math.abs(((info.highest - yesterday) / yesterday) * 100);
+				var down_amplitude = Math.abs(((info.lowest - yesterday) / yesterday) * 100);
+			} else {
+				var arr = $.parseJSON(rawData.slice(18)).data[short]["data"]["data"];
+				var info = $.parseJSON(rawData.slice(18)).data[short]["qt"][short];
+				var yesterday = parseFloat(info[4]);
+				var up_amplitude = Math.abs(((info[33] - yesterday) / yesterday) * 100);
+				var down_amplitude = Math.abs(((info[34] - yesterday) / yesterday) * 100);
+			}
+			var data = split_data(arr, yesterday);
+			avg = data.average[data.average.length - 1];
+			$(".avg").html(avg);
+			var max = 0;
+			for(var i = 1; i < data["number"].length; i++) {
+				var cur = data["number"][i];
+				cur > max ? (max = cur) : 0;
+			}
+			var up_down =
+				up_amplitude > down_amplitude ? up_amplitude : down_amplitude;
+			rate_min = -up_down;
+			rate_max = Math.abs(up_down);
+			rate_int = up_down / 4;
+			price_min = yesterday * (1 + rate_min / 100);
+			price_max = yesterday * (1 + rate_max / 100);
+			price_int = (yesterday * rate_int) / 100;
+			var option = {
+				animation: false,
+				tooltip: {
+					show: true,
+					trigger: "none",
+					axisPointer: {
+						type: "cross",
+						lineStyle: {
+							type: "solid",
+							color: "#777"
+						},
+						crossStyle: {
+							type: "solid",
+							color: "#777"
+						},
+						label: {
+							show: true,
+							precision: 2,
+							backgroundColor: "#000080",
+							borderColor: "#ff3232",
+							borderWidth: 1,
+							shadowBlur: 0
+						}
+					},
+					backgroundColor: "rgba(0, 0, 0)",
+					borderWidth: 1,
+					borderColor: "#B00000",
+					padding: [10, 2],
+					textStyle: {
+						color: "#FFF",
+						fontSize: 12
+					},
+					position: [0, 6],
+					formatter: function(params) {
+						return timeLine(params, yesterday);
+					},
+					crossStyle: {
+						opacity: 1
+					}
+				},
+				axisPointer: {
+					link: {
+						xAxisIndex: "all"
+					},
+					label: {
+						backgroundColor: "#777"
+					}
+				},
+				grid: [{
+						left: "66px",
+						right: "66px",
+						top: "2%",
+						height: "60%"
+					},
+					{
+						left: "66px",
+						right: "66px",
+						top: "62%",
+						height: "31%"
+					}
+				],
+				xAxis: [{
+						nameLocation: "center",
+						nameTextStyle: {
+							color: "#FFF"
+						},
+						type: "category",
+						data: data.times,
+						boundaryGap: false,
+						scale: true,
+						min: 0,
+						max: 240,
+						axisTick: {
+							show: false,
+							interval: 29
+						},
+						axisLabel: {
+							show: false,
+							interval: 29
+						},
+						axisLine: {
+							show: true,
+							lineStyle: {
+								color: "#B00000",
+								width: 2
+							}
+						},
+						splitLine: {
+							show: true,
+							lineStyle: {
+								color: ["#B00000"],
+								opacity: 1,
+								type: "dotted"
+							}
+						},
+						splitArea: {
+							show: false
+						},
+						axisPointer: {
+							show: true,
+							label: {
+								show: false
+							}
+						}
+					},
+					{
+						type: "category",
+						data: data.times,
+						scale: true,
+						boundaryGap: false,
+						min: 0,
+						max: 240,
+						gridIndex: 1,
+						axisTick: {
+							show: false,
+							interval: 29
+						},
+						axisLabel: {
+							show: true,
+							interval: 29,
+							textStyle: {
+								color: "#ff3232",
+								fontSize: 13
+							},
+							formatter: function(value, index) {
+								return axis_label(index);
+							}
+						},
+						axisLine: {
+							show: true,
+							lineStyle: {
+								color: "#B00000"
+							}
+						},
+						splitLine: {
+							show: true,
+							lineStyle: {
+								color: ["#B00000"],
+								opacity: 1,
+								type: "dotted"
+							}
+						},
+						splitArea: {
+							show: false
+						}
+					}
+				],
+				yAxis: [{
+						type: "value",
+						scale: true,
+						gridIndex: 0,
+						// min: (yesterday * (1 - down_v / 100)).toFixed(2),
+						// max: (yesterday * (1 + down_v / 100)).toFixed(2),
+						// interval: (yesterday * down_v / 4 / 100),
+						min: price_min,
+						max: price_max,
+						interval: price_int,
+						position: "left",
+						splitLine: {
+							show: true,
+							lineStyle: {
+								color: ["#B00000"],
+								opacity: 1
+							}
+						},
+						axisLine: {
+							show: true,
+							lineStyle: {
+								color: function(value) {
+									return axis_label_text_style(value, yesterday);
+								}
+							}
+						},
+						axisTick: {
+							show: true
+						},
+						axisLabel: {
+							true: true,
+							formatter: function(value) {
+								return value.toFixed(2);
+							}
+						},
+						splitArea: {
+							show: false
+						},
+						axisPointer: {
+							show: true,
+							label: {
+								show: true
+							}
+						}
+					},
+					{
+						type: "value",
+						scale: true,
+						boundaryGap: true,
+						gridIndex: 1,
+						position: "right",
+						max: max,
+						min: 0,
+						interval: max / 4,
+						axisLabel: {
+							textStyle: {
+								color: "#F0F888"
+							},
+							formatter: function(value) {
+								return value == 0 || value == max ? "" : value - (value % 10);
+							}
+						},
+						splitLine: {
+							show: true,
+							lineStyle: {
+								color: ["#B00000"],
+								opacity: 1
+							}
+						},
+						axisLine: {
+							show: true,
+							lineStyle: {
+								color: "#B00000"
+							}
+						},
+						axisTick: {
+							show: true
+						},
+						splitArea: {
+							show: false
+						},
+						axisPointer: {
+							show: true,
+							label: {
+								show: true,
+								precision: 0
+							}
+						}
+					},
+					{
+						type: "value",
+						scale: true,
+						gridIndex: 0,
+						min: rate_min,
+						max: rate_max,
+						maxInterval: rate_int,
+						splitLine: {
+							show: false,
+							lineStyle: {
+								color: ["#F2F2F2"],
+								opacity: 1
+							}
+						},
+						axisLine: {
+							show: true,
+							lineStyle: {
+								color: "#B00000"
+							}
+						},
+						axisTick: {
+							show: false
+						},
+						axisLabel: {
+							show: true,
+							textStyle: {
+								color: function(value) {
+									return axis_label_text_style(value, 0);
+								}
+							},
+							formatter: function(value) {
+								return value >= 0 ?
+									"+" + value.toFixed(2) + "%" :
+									"-" + (-value).toFixed(2) + "%";
+							}
+						},
+						splitArea: {
+							show: false
+						},
+						axisPointer: {
+							show: true,
+							label: {
+								show: false
+							}
+						}
+					},
+					{
+						type: "value",
+						scale: true,
+						gridIndex: 1,
+						splitLine: {
+							show: false,
+							lineStyle: {
+								color: ["#F2F2F2"],
+								opacity: 1
+							}
+						},
+						axisLine: {
+							show: true,
+							lineStyle: {
+								color: "#B00000"
+							}
+						},
+						axisTick: {
+							show: false
+						},
+						axisLabel: {
+							show: true,
+							textStyle: {
+								color: function(value) {
+									if(value > 0) {
+										return "#ff3232";
+									} else if(value == 0) {
+										return "#000";
+									} else {
+										return "#17A63A";
+									}
+								}
+							},
+							formatter: function(value) {
+								return value >= 0 ?
+									value.toFixed(2) + "%" :
+									(-value).toFixed(2) + "%";
+							}
+						},
+						splitArea: {
+							show: false
+						}
+					}
+				],
+				series: [{
+						name: "现价",
+						type: "line",
+						xAxisIndex: 0,
+						yAxisIndex: 0,
+						data: data.price,
+						smooth: true,
+						showSymbol: false,
+						lineStyle: {
+							normal: {
+								width: 1,
+								color: "#FAFAFA"
+							}
+						}
+					},
+					{
+						name: "交易量",
+						type: "bar",
+						xAxisIndex: 1,
+						yAxisIndex: 1,
+						barMaxWidth: "1px",
+						data: af(data.number),
+						smooth: true,
+						showSymbol: false,
+						lineStyle: {
+							normal: {
+								width: 1,
+								color: "#FAFAFA"
+							}
+						}
+					},
+					{
+						name: "均价",
+						type: "line",
+						xAxisIndex: 0,
+						yAxisIndex: 0,
+						data: data.average,
+						smooth: true,
+						symbol: "none",
+						lineStyle: {
+							normal: {
+								width: 1,
+								color: "#fbff5d"
+							}
+						},
+						sampling: "average"
+					},
+					{
+						name: "均量",
+						type: "line",
+						xAxisIndex: 1,
+						yAxisIndex: 1,
+						data: data.average_num,
+						smooth: true,
+						symbol: "none",
+						lineStyle: {
+							normal: {
+								width: 1,
+								color: "#FFF"
+							}
+						},
+						sampling: "average"
+					}
+				]
+			};
+			myChart.clear(option, true);
+			myChart.setOption(option, true);
+		}
+
+		function time_data(time) {
+
+			var amDate = new Date(time * 1000);
+			return(
+				getzf(amDate.getHours()) + ":" + getzf(amDate.getMinutes())
+			);
+		}
+
+		function af(data) {
+			var result = [],
+				i;
+			for(i = 0; i < data.length; i++) {
+				var html = "";
+				// var x = data[i] - data[i - 1];
+				html = {
+					value: data[i],
+					itemStyle: {
+						normal: {
+							color: "#F0F888"
+						}
+					}
+				};
+				// if (x > 0) {
+				//     html = {value: data[i] / 10000, itemStyle: {normal: {color: "#D91A2A"}}};
+				// } else {
+				//     html = {value: data[i] / 10000, itemStyle: {normal: {color: "#17A63A"}}};
+				// }
+				result.push(html);
+			}
+			return result;
+		}
+
+		function timeLine(params, yesterday) {
+
+			var times = "";
+			var price = 0,
+				average = 0,
+				number = 0;
+			$.each(params, function(i, item) {
+				if(i == 0) {
+					times = item.name;
+				}
+				if(item.seriesName == "现价") {
+					price = item.value;
+				} else if(item.seriesName == "均价") {
+					average = item.value;
+				} else if(item.seriesName == "交易量") {
+					number = item.value;
+				}
+			});
+			var ran = price - yesterday;
+			var color = axis_label_text_style(ran, 0);
+			return(
+				"<div><span>时间：</span><b>" +
+				times +
+				"</b></div>" +
+				'<div><span>价位：</span><b style="color: ' +
+				color +
+				'">' +
+				price +
+				"</b></div>" +
+				'<div><span>均价：</span><b style="color: ' +
+				color +
+				'">' +
+				average +
+				"</b></div>" +
+				'<div><span>涨跌：</span><b style="color: ' +
+				color +
+				'">' +
+				ran.toFixed(2) +
+				"</b></div>" +
+				'<div><span>涨幅：</span><b style="color: ' +
+				color +
+				'">' +
+				((ran / yesterday) * 100).toFixed(2) +
+				"%</b></div>" +
+				'<div><span>成交量：</span><b style="color:#F0F888">' +
+				number.toFixed(0) +
+				"</b></div>" +
+				'<div><span>成交额：</span><b style="color:#F0F888">' +
+				((number * average) / 100).toFixed(1) +
+				"万</b></div>"
+			);
+		}
+		//补0操作
+		function getzf(num) {
+			if(parseInt(num) < 10) {
+				num = "0" + num;
+			}
+			return num;
+		}
+		/**
+		 * 数据处理
+		 * @param rawData
+		 * @param yesterday
+		 * @returns {{data: Array, price: Array, number: Array, times: Array|*, average: Array, average_num: Array, rates: Array, increase: Array}}
+		 */
+		function split_data(rawData, yesterday) {
+
+			var datas = [],
+				number = [],
+				price = [],
+				times,
+				average = [],
+				average_num = [],
+				rates = [],
+				increase = [];
+			var num = 0,
+				arr_up;
+			var price_total = 0,
+				num_total = 0;
+			for(var i = 0; i < rawData.length; i++) {
+				var arr = rawData[i].split(" ");
+				if(i > 0) {
+					arr_up = rawData[i - 1].split(" ");
+					num = parseFloat(arr[2]) - parseFloat(arr_up[2]);
+				} else {
+					num = parseFloat(arr[2]);
+				}
+				if(i != 121) {
+					number.push(num);
+					price.push(parseFloat(arr[1]).toFixed(2));
+				}
+				datas.push(arr);
+				increase.push((arr[1] - yesterday).toFixed(2));
+				rates.push((((arr[1] - yesterday) / yesterday) * 100).toFixed(2));
+				price_total += parseFloat(arr[1]);
+				num_total = parseFloat(arr[2]);
+				average.push((price_total / (i + 1)).toFixed(2));
+				average_num.push((num_total / (i + 1)).toFixed(0));
+			}
+			times = date_time();
+			return {
+				data: datas,
+				price: price,
+				number: number,
+				times: times,
+				average: average,
+				average_num: average_num,
+				rates: rates,
+				increase: increase
+			};
+		}
+		/**
+		 * X轴标文本样式
+		 * @param value
+		 * @param num
+		 * @returns {string}
+		 */
+		function axis_label_text_style(value, num) {
+			value = Math.round(value * 100) / 100;
+			num = Math.round(num * 100) / 100;
+			if(value > num) {
+				return "#ff3232";
+			} else if(value == num) {
+				return "#FFFFFF";
+			} else {
+				return "#00e600";
+			}
+		}
+		/**
+		 * X轴标时间处理
+		 * @param index
+		 * @returns {*}
+		 */
+		function axis_label(index) {
+
+			var today = new Date(new Date().setHours(0, 0, 0, 0)) / 1000;
+			var am1 = today + 9.5 * 3600,
+				am11 = today + 10 * 3600,
+				am2 = today + 10.5 * 3600,
+				am21 = today + 10 * 3600,
+				am3 = today + 11.5 * 3600;
+			var pm1 = today + 13 * 3600,
+				pm11 = today + 13.5 * 3600,
+				pm2 = today + 14 * 3600,
+				pm21 = today + 14.5 * 3600,
+				pm3 = today + 15 * 3600;
+			var x;
+			if(index == 0) {
+				x = time_data(am1);
+			} else if(index == 30) {
+				x = time_data(am11);
+			} else if(index == 60) {
+				x = time_data(am2);
+			} else if(index == 90) {
+				x = time_data(am21);
+			} else if(index == 120) {
+				x = time_data(am3); //+ '/' + time_data(pm1)
+			} else if(index == 150) {
+				x = time_data(pm11);
+			} else if(index == 180) {
+				x = time_data(pm2);
+			} else if(index == 210) {
+				x = time_data(pm21);
+			} else if(index == 240) {
+				x = time_data(pm3);
+			}
+			return x;
+		}
+		/**
+		 * 开市时间
+		 * @returns {Array}
+		 */
+		function date_time() {
+
+			var today = new Date(new Date().setHours(0, 0, 0, 0)) / 1000;
+			var i,
+				times = [];
+			var am1 = today + 9.5 * 3600,
+				pm1 = today + 13 * 3600;
+			for(i = 0; i <= 120; i++) {
+				times.push(time_data(am1 + i * 60));
+			}
+			for(i = 1; i <= 120; i++) {
+				times.push(time_data(pm1 + i * 60));
+			}
+			return times;
+		}
+		$(function() {
+			document.oncontextmenu = function() {
+				return false;
+			}
+
+		})
+	</script>
+
+</html>

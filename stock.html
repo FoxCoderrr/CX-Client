@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>股票交易</title>
+		<!-- 公共样式 -->
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="iconfont/iconfont.css" />
+		<!-- 页面样式 -->
+		<link rel="stylesheet" type="text/css" href="css/stock.css" />
+	</head>
+
+	<body class="w_body" onclick="reset()">
+		<div class="wrap_box">
+			<div class="main">
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th> </th>
+								<th>代码</th>
+								<th>名称</th>
+								<th>涨跌幅</th>
+								<th>现价</th>
+								<th>涨跌额</th>
+								<th>成交金额</th>
+								<th>换手</th>
+								<th>市盈率</th>
+								<th>买入价</th>
+								<th>卖出价</th>
+								<th>今开</th>
+								<th>昨收</th>
+								<th>最高</th>
+								<th>最低</th>
+								<th>振幅</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<div class="sort clearfix">
+					<span class="span c_p active">指数</span>
+					<span class="span c_p">自选</span>
+					<span class="s_btn c_p" onclick="prev()">上一页</span>
+					<span class="s_btn c_p" onclick="next()">下一页</span>
+				</div>
+			</div>
+		</div>
+		<div class="mouse_div mouse_div1" onclick="stop(event)">
+			<ul>
+				<li class="li" onclick="addMy()">加入自选股&nbsp;&nbsp;&nbsp;insert</li>
+				<li class="f_c_gray">删除自选股&nbsp;&nbsp;&nbsp;del</li>
+				<li class="li" onclick="toTline()">实时走势</li>
+				<li class="li" onclick="toKline(1)">日线</li>
+				<li class="li" onclick="toKline(2)">周线</li>
+				<li class="li" onclick="toKline(3)">月线</li>
+			</ul>
+		</div>
+		<div class="mouse_div mouse_div2" onclick="stop(event)">
+			<ul>
+				<li class="f_c_gray">加入自选股&nbsp;&nbsp;&nbsp;insert</li>
+				<li class="li" onclick="deleteMy()">删除自选股&nbsp;&nbsp;&nbsp;del</li>
+				<li class="li" onclick="toTline()">实时走势</li>
+				<li class="li" onclick="toKline(1)">日线</li>
+				<li class="li" onclick="toKline(2)">周线</li>
+				<li class="li" onclick="toKline(3)">月线</li>
+			</ul>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var active_index = 0;
+		var active_index1 = 0;
+		var active_arr=[];
+		var page = 1,max;
+
+		function reset() {
+			$(".mouse_div1").hide();
+			$(".mouse_div2").hide();
+		}
+
+		function stop(e) {
+			e.stopPropagation();
+		}
+		//列表  鼠标左键
+		function leftClick(e, i) {
+			$("tbody tr").eq(i).addClass("active").siblings("tr").removeClass("active");
+			if($(".sort>.active").index()==0){				
+				active_index = i;
+			}else{
+				active_index1 = i;
+			}
+			sessionStorage.setItem("activeshort",active_arr[i]);
+		}
+
+		function position(o) {
+			var w = $("body").width();
+			if(o.screenX + 202 > w) {
+				return {
+					left: o.x - 202,
+					top: o.y
+				};
+			} else {
+				return {
+					left: o.x,
+					top: o.y
+				};
+			}
+		}
+		//列表  鼠标右键
+		function rightClick(e, i) {
+			$("tbody tr").eq(i).addClass("active").siblings("tr").removeClass("active");
+			if($(".sort .active").index()) {
+				active_index1 = i;
+				$(".mouse_div2").css(position(e)).show();
+			} else {
+				active_index = i;
+				$(".mouse_div1").css(position(e)).show();
+			}
+		}
+		// 列表 鼠标双击
+		function dbClick(e, i) {
+			toTline();
+		}
+		//转分时
+		function toTline(){
+			sessionStorage.setItem("source",$(".sort>.active").index());
+			$(window.parent.document).find(".market").attr("src","tline.html");
+		}
+		//转K线
+		function toKline(i){
+			sessionStorage.setItem("source",$(".sort>.active").index());
+			sessionStorage.setItem("ktype",i);
+			$(window.parent.document).find(".market").attr("src","kline.html");
+		}
+		//添加自选
+		function addMy(){
+			reset();
+			var tem_arr = JSON.parse(localStorage.getItem("my"));
+			var bool = true;
+			for(let v of tem_arr){
+				if(v == active_arr[active_index]){
+					bool = false;
+					break;
+				}
+			}
+			if(bool){
+				tem_arr.push(active_arr[active_index]);
+				localStorage.setItem("my",JSON.stringify(tem_arr));
+			}
+		}
+		//删除自选
+		function deleteMy(){
+			reset();
+			var tem_arr = JSON.parse(localStorage.getItem("my"));
+			tem_arr.splice(active_index,1);
+			localStorage.setItem("my",JSON.stringify(tem_arr));
+			getList();
+		}
+		function next(){
+			if($(".sort>.active").index()){
+				return false;
+			}
+			if(page==max){
+				page=1;
+			}else{
+				page++;
+			}
+			getList();
+		}
+		function prev(){
+			if($(".sort>.active").index()){
+				return false;
+			}
+			if(page==1){
+				page=max;
+			}else{
+				page--;
+			}
+			getList();
+		}
+		//获取股票
+		function getList() {
+			clearInterval(window.stock_time);
+			$(".table tbody").scrollTop(0);
+			var url, data, arr = [];
+			if($(".sort .active").index()) {
+				arr = JSON.parse(localStorage.getItem("my"));
+				sessionStorage.setItem("activeshort",arr[0]);
+				active_arr = arr;
+				getMarket(arr);
+				window.stock_time = setInterval(()=>{
+					getMarket(arr);
+				},2000)
+			} else {
+				url = `${nozUrl}Api/Stock/index`;
+				data = {
+					userId: JSON.parse(sessionStorage.getItem("uinfo")).id,
+					page: page,
+					num: 20,
+				}
+				$.ajax({
+					type: "post",
+					dataType: "json",
+					url: url,
+					data: data,
+					success: function(res) {
+						max = res.data.page;
+						for(let v of res.data.data) {
+							arr.push(v.short);
+						}
+						sessionStorage.setItem("activeshort",arr[0]);
+						active_arr = arr;
+						getMarket(arr);
+						window.stock_time = setInterval(()=>{
+							getMarket(arr);
+						},2000)
+					}
+				})
+			}
+		}
+
+		function getMarket(arr) {
+			let list = [],str="";
+			$.ajax({
+				cache: true,
+				url: "http://qt.gtimg.cn/q=" + arr.toString(),
+				type: "GET",
+				dataType: "script",
+				success: function() {
+					for(let i in arr) {
+						let obj = {};
+						let a = eval("v_" + arr[i]).split("~");
+						obj.short = arr[i];
+						obj.code = a[2];
+						obj.name = a[1];
+						obj.updown_ = a[32] + "%";
+						obj.price = a[3];
+						obj.updown = a[31];
+						if(a[37] > 10000) {
+							if(parseFloat(a[37] % 10000)) {
+								a[37] = parseFloat(a[37] / 10000).toFixed(1);
+							} else {
+								a[37] = parseFloat(a[37] / 10000);
+							}
+							a[37] = parseFloat(a[37]) + "亿";
+						} else {
+							a[37] = a[37] + "万";
+						}
+						obj.amount = a[37];
+						obj.hand = a[38] + "%";
+						obj.ratio = a[39];
+						obj.buy = a[9];
+						obj.sell = a[19];
+						obj.today = a[5];
+						obj.yestoday = a[4];
+						obj.high = a[33];
+						obj.low = a[34];
+						obj.range = a[43] + "%";
+						list.push(obj);
+					}
+					for(let i in list){
+						var main_color,today_color,high_color,low_color;
+						if(list[i].updown>0){
+							main_color = "f_c_red"
+						}else if(list[i].updown<0){
+							main_color = "f_c_green"
+						}else{
+							main_color = "f_c_white"
+						}
+						if(list[i].today>list[i].yestoday){
+							today_color = "f_c_red"
+						}else if(list[i].today<list[i].yestoday){
+							today_color = "f_c_green"
+						}else{
+							today_color = "f_c_white"
+						}
+						if(list[i].high>list[i].today){
+							high_color = "f_c_red"
+						}else if(list[i].high<list[i].today){
+							high_color = "f_c_green"
+						}else{
+							high_color = "f_c_white"
+						}
+						if(list[i].low>list[i].today){
+							low_color = "f_c_red"
+						}else if(list[i].low<list[i].today){
+							low_color = "f_c_green"
+						}else{
+							low_color = "f_c_white"
+						}
+						var cls;
+						if($(".sort>.active").index()==0){							
+							cls = (i == active_index)?"active":"";
+						}else{
+							cls = (i == active_index1)?"active":"";
+						}
+						str+=`<tr class="${cls}" onclick="leftClick(event,${i})" oncontextmenu="rightClick(event,${i})" ondblclick="dbClick(event,${i})">
+								<td>${Number(i)+1+Number((page-1)*20)}</td>
+								<td class="f_c_yellow">${list[i].code}</td>
+								<td class="f_c_yellow">${list[i].name}</td>
+								<td class="${main_color}">${list[i].updown_}</td>
+								<td class="${main_color}">${list[i].price}</td>
+								<td class="${main_color}">${list[i].updown}</td>
+								<td>${list[i].amount}</td>
+								<td>${list[i].hand}</td>
+								<td>${list[i].ratio}</td>
+								<td class="${main_color}">${list[i].buy}</td>
+								<td class="${main_color}">${list[i].sell}</td>
+								<td class="${today_color}">${list[i].today}</td>
+								<td class="f_c_white">${list[i].yestoday}</td>
+								<td class="${high_color}">${list[i].high}</td>
+								<td class="${low_color}">${list[i].low}</td>
+								<td>${list[i].range}</td>
+							</tr>`
+					}
+					$(".table tbody").html(str);
+				}
+			});
+		}
+		$(function() {
+			document.oncontextmenu = function() {
+				return false;
+			}
+			if(sessionStorage.getItem("source")==1){
+				$(".sort>.span").eq(1).addClass("active").siblings(".span").removeClass("active");
+				getList();
+			}else{
+				$(".sort>.span").eq(0).addClass("active").siblings(".span").removeClass("active");
+				getList();
+			}
+			//分类点击
+			$(".sort>.span").on("click", function() {
+				$(this).addClass("active").siblings(".span").removeClass("active");
+				if($(this).index()){
+					var my_arr=JSON.parse(localStorage.getItem("my"));
+					clearInterval(window.stock_time);
+					if(my_arr.length==0){
+						$(".table tbody").html("");
+					}else{
+						getList();
+					}
+				}else{
+					sessionStorage.setItem("source",0)
+					page=1;
+					getList();
+				}
+			})
+		})
+	</script>
+
+</html>

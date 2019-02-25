@@ -1,0 +1,205 @@
+.main {
+	background: #000;
+	width: 100%;
+	height: 100%;
+}
+
+.info_div {
+	height: 24px;
+	color: white;
+	box-sizing: border-box;
+	position: relative;
+	z-index: 1;
+	padding: 0px 276px 0px 66px;
+}
+
+.info_div>span {
+	display: inline-block;
+	margin-right: 6px;
+	font-size: 16px;
+
+}
+
+.info_div>span>span {
+	font-size: 14px;
+}
+
+.info_div>span:first-child {
+	font-size: 14px;
+	color: #c0c0c0;
+	padding-top: 14px;
+}
+
+.info_div>span:nth-child(4) {
+	margin-right: 18px;
+}
+
+.info_div>.f_r {
+	font-size: 14px;
+	transform: translateY(14px);
+	margin-right: 10px;
+
+}
+
+.info_div>.f_r.iconfont {
+	font-size: 15px;
+	margin-right: 2px;
+}
+
+.div {
+	height: calc(100% - 24px);
+}
+
+#chart {
+	float: left;
+	box-sizing: border-box;
+	width: calc(100% - 210px);
+	height: 100%;
+}
+.right_div {
+	float: right;
+  width: 198px;
+  height: 100%;
+  border: 1px solid #b00000;
+  border-bottom: 0;
+
+}
+.right_div >div {
+  height: 100%;
+}
+.right_div .d_title {
+  color: #01daeb;
+  border-bottom: 1px solid #b00000;
+  padding: 2px 0 2px;
+  font-size: 15px;
+  height: 25px;
+}
+.right_div .d_con {
+  color: #c0c0c0;
+  height: calc(100% - 25px);
+  font-size: 14px;
+}
+.right_div .d_con .d1 {
+  box-sizing: border-box;
+  padding: 0 2px 0;
+  line-height: 20px;
+  border-bottom: 1px solid #b00000;
+}
+.right_div .d_con .d1 > span {
+  width: 50%;
+  box-sizing: border-box;
+}
+.right_div .d_con .d1 > span > span:first-child {
+  font-size: 15px;
+}
+.right_div .d_con .d1 > span:first-child {
+  padding-right: 1px;
+}
+.right_div .d_con .d1 > span:last-child {
+  padding-left: 1px;
+}
+.right_div .d_con .d2 > span {
+  width: calc(50% - 8px);
+  font-size: 15px;
+}
+.right_div .d_con .d_list {
+  overflow: auto;
+  position: relative;
+  height: calc(100% - 21px);
+}
+.right_div .d_con .d_list ul {
+  border-bottom: 1px solid #b00000;
+}
+.right_div .d_con .d_list ul li {
+  line-height: 18px;
+}
+.right_div .d_con .d_list ul li > span {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 0 2px 0;
+}
+.right_div .d_con .d_list ul li > span > span:last-child {
+  font-size: 15px;
+}
+.right_div .d_con .d_list .ul1 li > span > span:first-child {
+  font-size: 15px;
+}
+.right_div .d_con .d_list .ul2 li >span {
+  width: calc(42%);
+}
+.right_div .d_con .d_list .ul2 li >span >span {
+  font-size: 14px !important;
+}
+.right_div .d_con .d_list .ul2 li >.spe {
+  width: 50%;
+}
+.right_div .d_con .d_list .d_menu {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #b00000;
+  border-right: 1px solid #b00000;
+  overflow: hidden;
+}
+.right_div .d_con .d_list .d_menu > span {
+  float: left;
+  padding: 1px 4px 1px;
+}
+.right_div .d_con .d_list .d_menu > span:first-child {
+  border-right: 1px solid #b00000;
+}
+.right_div >.spe_right {
+  color: #c0c0c0;
+}
+.right_div >.spe_right ul li {
+  line-height: 21px;
+  font-size: 15px;
+  padding: 0 2px 0;
+}
+.right_div >.spe_right .ul {
+  border-bottom: 1px solid #b00000;
+}
+
+.show2,.info_div>.to_small{
+	display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.mouse_div {
+	display: none;
+	left: 0;
+	top: 0;
+	position: fixed;
+	background: white;
+	font-size: 13px;
+	border: 1px solid #ccc;
+	width: 200px;
+	z-index: 9
+}
+
+.mouse_div ul {
+	padding: 4px 0 4px;
+}
+
+.mouse_div ul li {
+	cursor: default;
+	line-height: 26px;
+	padding-left: 30px;
+}
+
+.mouse_div ul .li:hover {
+	background: #ebebeb;
+}
